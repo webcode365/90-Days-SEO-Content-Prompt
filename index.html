@@ -1,0 +1,1277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SEO Prompt Generator — LetterCracker.info</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0c0e14;
+    --surface: #13161f;
+    --card: #1a1e2b;
+    --border: #252a3a;
+    --text: #e2e8f0;
+    --muted: #6b7280;
+    --accent: #22d3a0;
+    --accent2: #3b82f6;
+    --phase1: #3b82f6;
+    --phase2: #f59e0b;
+    --phase3: #a855f7;
+    --phase4: #ef4444;
+    --copied: #22d3a0;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Syne', sans-serif;
+    min-height: 100vh;
+  }
+
+  /* HEADER */
+  header {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 20px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .logo { display: flex; align-items: center; gap: 12px; }
+  .logo-dot {
+    width: 32px; height: 32px; background: var(--accent);
+    border-radius: 8px; display: flex; align-items: center; justify-content: center;
+    font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 13px;
+    color: #0c0e14;
+  }
+  .logo-text { font-size: 18px; font-weight: 800; letter-spacing: -0.5px; }
+  .logo-sub { font-size: 12px; color: var(--muted); margin-top: 1px; font-weight: 400; }
+  .stats { display: flex; gap: 24px; }
+  .stat { text-align: center; }
+  .stat-num { font-size: 20px; font-weight: 800; color: var(--accent); font-family: 'JetBrains Mono', monospace; }
+  .stat-label { font-size: 11px; color: var(--muted); }
+
+  /* PHASE LEGEND */
+  .phase-bar {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 12px 32px;
+    display: flex; gap: 20px; align-items: center; flex-wrap: wrap;
+  }
+  .phase-tag {
+    display: flex; align-items: center; gap: 6px;
+    font-size: 12px; font-weight: 600; cursor: pointer;
+    padding: 5px 12px; border-radius: 20px;
+    border: 1.5px solid transparent; transition: all .2s;
+  }
+  .phase-tag.active, .phase-tag:hover { border-color: currentColor; }
+  .phase-dot { width: 8px; height: 8px; border-radius: 50%; }
+  .p1 { color: var(--phase1); }
+  .p2 { color: var(--phase2); }
+  .p3 { color: var(--phase3); }
+  .p4 { color: var(--phase4); }
+  .pa { color: var(--muted); }
+  .phase-tag.pa { color: var(--text); }
+  .search-wrap { margin-left: auto; }
+  .search-input {
+    background: var(--card); border: 1.5px solid var(--border);
+    color: var(--text); padding: 7px 14px; border-radius: 8px;
+    font-family: 'JetBrains Mono', monospace; font-size: 13px;
+    outline: none; width: 200px; transition: border .2s;
+  }
+  .search-input:focus { border-color: var(--accent); }
+  .search-input::placeholder { color: var(--muted); }
+
+  /* MAIN LAYOUT */
+  .layout { display: flex; gap: 0; height: calc(100vh - 111px); }
+
+  /* LEFT PANEL - Day List */
+  .left-panel {
+    width: 340px; min-width: 300px;
+    overflow-y: auto; border-right: 1px solid var(--border);
+    background: var(--surface);
+  }
+  .left-panel::-webkit-scrollbar { width: 4px; }
+  .left-panel::-webkit-scrollbar-track { background: transparent; }
+  .left-panel::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+  .day-group { border-bottom: 1px solid var(--border); }
+  .day-header {
+    padding: 14px 20px 10px;
+    display: flex; align-items: center; gap: 10px; cursor: pointer;
+    user-select: none; transition: background .15s;
+  }
+  .day-header:hover { background: var(--card); }
+  .day-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; font-weight: 700;
+    color: var(--muted); min-width: 44px;
+  }
+  .day-phase-badge {
+    font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 10px;
+    text-transform: uppercase; letter-spacing: .5px;
+  }
+  .badge-Authority { background: rgba(59,130,246,.15); color: var(--phase1); }
+  .badge-Recency { background: rgba(245,158,11,.15); color: var(--phase2); }
+  .badge-Scaling { background: rgba(168,85,247,.15); color: var(--phase3); }
+  .badge-ScalingROI { background: rgba(239,68,68,.15); color: var(--phase4); }
+  .day-posts { padding: 0 12px 10px; display: flex; flex-direction: column; gap: 4px; }
+  .post-btn {
+    display: flex; align-items: center; gap: 10px;
+    background: var(--card); border: 1.5px solid var(--border);
+    color: var(--text); padding: 9px 12px; border-radius: 8px;
+    cursor: pointer; text-align: left; width: 100%;
+    font-family: 'Syne', sans-serif; font-size: 12px;
+    transition: all .15s; line-height: 1.3;
+  }
+  .post-btn:hover { border-color: var(--accent); background: rgba(34,211,160,.06); }
+  .post-btn.active {
+    border-color: var(--accent); background: rgba(34,211,160,.1);
+    color: var(--accent);
+  }
+  .post-num {
+    font-family: 'JetBrains Mono', monospace; font-size: 10px;
+    font-weight: 700; color: var(--muted); min-width: 36px;
+    background: var(--bg); padding: 2px 5px; border-radius: 4px;
+    text-align: center; flex-shrink: 0;
+  }
+  .post-btn.active .post-num { color: var(--accent); background: rgba(34,211,160,.15); }
+
+  /* RIGHT PANEL - Prompt */
+  .right-panel { flex: 1; overflow-y: auto; padding: 32px; display: flex; flex-direction: column; gap: 24px; }
+  .right-panel::-webkit-scrollbar { width: 4px; }
+  .right-panel::-webkit-scrollbar-track { background: transparent; }
+  .right-panel::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+  .welcome-screen {
+    flex: 1; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; text-align: center; gap: 20px;
+  }
+  .welcome-icon { font-size: 60px; }
+  .welcome-title { font-size: 28px; font-weight: 800; }
+  .welcome-sub { color: var(--muted); font-size: 15px; max-width: 400px; line-height: 1.6; }
+  .welcome-steps {
+    display: flex; gap: 16px; margin-top: 12px; flex-wrap: wrap; justify-content: center;
+  }
+  .step-card {
+    background: var(--card); border: 1px solid var(--border);
+    padding: 16px 20px; border-radius: 12px; text-align: left; width: 170px;
+  }
+  .step-num { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--accent); font-weight: 700; margin-bottom: 6px; }
+  .step-text { font-size: 13px; line-height: 1.4; color: var(--muted); }
+
+  /* PROMPT CARD */
+  .prompt-card { background: var(--card); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; }
+  .prompt-header {
+    padding: 20px 24px; border-bottom: 1px solid var(--border);
+    display: flex; align-items: flex-start; gap: 16px;
+  }
+  .prompt-meta { flex: 1; }
+  .prompt-day-tag {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    color: var(--accent); font-weight: 700; margin-bottom: 6px;
+  }
+  .prompt-title { font-size: 20px; font-weight: 800; line-height: 1.3; }
+  .prompt-url {
+    font-family: 'JetBrains Mono', monospace; font-size: 12px;
+    color: var(--muted); margin-top: 6px;
+  }
+  .meta-grid { display: flex; gap: 12px; margin-top: 12px; flex-wrap: wrap; }
+  .meta-chip {
+    font-size: 11px; padding: 4px 10px; border-radius: 6px;
+    background: var(--bg); border: 1px solid var(--border); color: var(--muted);
+  }
+  .meta-chip strong { color: var(--text); }
+  .copy-btn {
+    background: var(--accent); color: #0c0e14;
+    border: none; padding: 10px 20px; border-radius: 10px;
+    font-family: 'Syne', sans-serif; font-size: 14px; font-weight: 700;
+    cursor: pointer; transition: all .15s; white-space: nowrap; flex-shrink: 0;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .copy-btn:hover { background: #1ab88a; transform: translateY(-1px); }
+  .copy-btn.copied { background: #1ab88a; }
+
+  .prompt-body { padding: 24px; }
+  .prompt-textarea {
+    width: 100%; min-height: 460px;
+    background: var(--bg); border: 1px solid var(--border);
+    color: var(--text); padding: 20px;
+    font-family: 'JetBrains Mono', monospace; font-size: 13px; line-height: 1.8;
+    border-radius: 10px; resize: vertical; outline: none;
+    transition: border .2s;
+  }
+  .prompt-textarea:focus { border-color: var(--accent); }
+
+  /* TIPS */
+  .tips-card {
+    background: rgba(34,211,160,.05); border: 1px solid rgba(34,211,160,.15);
+    border-radius: 12px; padding: 16px 20px;
+  }
+  .tips-title { font-size: 13px; font-weight: 700; color: var(--accent); margin-bottom: 8px; }
+  .tips-list { list-style: none; display: flex; flex-direction: column; gap: 5px; }
+  .tips-list li { font-size: 12px; color: var(--muted); padding-left: 14px; position: relative; line-height: 1.5; }
+  .tips-list li::before { content: '→'; position: absolute; left: 0; color: var(--accent); }
+
+  /* PHASE SECTION LABEL */
+  .phase-section-label {
+    padding: 8px 20px; font-size: 10px; font-weight: 800;
+    text-transform: uppercase; letter-spacing: 1px;
+    background: var(--bg); color: var(--muted);
+    border-bottom: 1px solid var(--border);
+    position: sticky; top: 0; z-index: 2;
+  }
+
+  .hidden { display: none !important; }
+
+  @media (max-width: 768px) {
+    .layout { flex-direction: column; height: auto; }
+    .left-panel { width: 100%; max-height: 300px; border-right: none; border-bottom: 1px solid var(--border); }
+    .right-panel { padding: 16px; }
+    .stats { display: none; }
+    header { padding: 14px 16px; }
+    .phase-bar { padding: 10px 16px; }
+    .search-wrap { margin-left: 0; }
+    .search-input { width: 140px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    <div class="logo-dot">LC</div>
+    <div>
+      <div class="logo-text">SEO Prompt Generator</div>
+      <div class="logo-sub">LetterCracker.info — 100-Day Plan</div>
+    </div>
+  </div>
+  <div class="stats">
+    <div class="stat"><div class="stat-num">100</div><div class="stat-label">Days</div></div>
+    <div class="stat"><div class="stat-num">270</div><div class="stat-label">Posts</div></div>
+    <div class="stat"><div class="stat-num">4</div><div class="stat-label">Phases</div></div>
+  </div>
+</header>
+
+<div class="phase-bar">
+  <span style="font-size:12px;color:var(--muted);font-weight:600;">FILTER:</span>
+  <div class="phase-tag pa active" onclick="filterPhase('all', this)">
+    <div class="phase-dot" style="background:#6b7280"></div> All Days
+  </div>
+  <div class="phase-tag p1" onclick="filterPhase('Authority', this)">
+    <div class="phase-dot" style="background:var(--phase1)"></div> Phase 1 · Authority (D1–30)
+  </div>
+  <div class="phase-tag p2" onclick="filterPhase('Recency', this)">
+    <div class="phase-dot" style="background:var(--phase2)"></div> Phase 2 · Recency (D31–60)
+  </div>
+  <div class="phase-tag p3" onclick="filterPhase('Scaling', this)">
+    <div class="phase-dot" style="background:var(--phase3)"></div> Phase 3 · Scaling (D61–70)
+  </div>
+  <div class="phase-tag p4" onclick="filterPhase('ScalingROI', this)">
+    <div class="phase-dot" style="background:var(--phase4)"></div> Phase 4 · ROI (D71–100)
+  </div>
+  <div class="search-wrap">
+    <input class="search-input" type="text" placeholder="Search keyword..." oninput="searchDays(this.value)" />
+  </div>
+</div>
+
+<div class="layout">
+  <div class="left-panel" id="leftPanel"></div>
+  <div class="right-panel" id="rightPanel">
+    <div class="welcome-screen">
+      <div class="welcome-icon">⚡</div>
+      <div class="welcome-title">Ready to Generate</div>
+      <div class="welcome-sub">Select any day and post from the left panel. Your ready-to-copy SEO prompt will appear here instantly.</div>
+      <div class="welcome-steps">
+        <div class="step-card"><div class="step-num">STEP 1</div><div class="step-text">Click any Post button on the left</div></div>
+        <div class="step-card"><div class="step-num">STEP 2</div><div class="step-text">Your prompt appears here automatically</div></div>
+        <div class="step-card"><div class="step-num">STEP 3</div><div class="step-text">Click "Copy Prompt" and paste into Claude/ChatGPT/Gemini</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ============================================================
+// ✅ HOW TO ADD NEW DAYS (Days 101, 102, etc.)
+// ============================================================
+// Copy one of the blocks below and paste AFTER the last day.
+// Fill in: day, postNum, phase, keyword, supporting, title, url, words
+// phase options: "Authority" | "Recency" | "Scaling" | "ScalingROI"
+// words = target word count (e.g. 1500)
+//
+// EXAMPLE TEMPLATE TO COPY:
+// { day:101, postNum:1, phase:"ScalingROI", keyword:"your keyword here", supporting:"supporting keyword 1, supporting keyword 2", title:"Your Article Title Here", url:"/your-url-here.html", words:1500 },
+// { day:101, postNum:2, phase:"ScalingROI", keyword:"your keyword here", supporting:"supporting keyword", title:"Your Article Title", url:"/your-url.html", words:1500 },
+// ============================================================
+
+const WEBSITE = "LetterCracker.info";
+
+const posts = [
+  // ── PHASE 1: AUTHORITY (Days 1–30) ──────────────────────
+  {day:1,postNum:1,phase:"Authority",keyword:"5 letter words starting with a",supporting:"words start with a, a letter words",title:"5 Letter Words Starting With A (Complete List)",url:"/5-letter-words-starting-with-a.html",words:1800},
+  {day:1,postNum:2,phase:"Authority",keyword:"5 letter words starting with a ending in e",supporting:"a _ _ _ e words",title:"5 Letter Words Starting With A Ending in E",url:"/5-letter-words-starting-with-a-ending-in-e.html",words:1500},
+  {day:2,postNum:1,phase:"Authority",keyword:"5 letter words starting with b",supporting:"words start with b",title:"5 Letter Words Starting With B",url:"/5-letter-words-starting-with-b.html",words:1800},
+  {day:2,postNum:2,phase:"Authority",keyword:"5 letter words with a and b",supporting:"contains a b",title:"5 Letter Words With A and B",url:"/5-letter-words-with-a-and-b.html",words:1500},
+  {day:3,postNum:1,phase:"Authority",keyword:"5 letter words starting with c",supporting:"words start with c",title:"5 Letter Words Starting With C",url:"/5-letter-words-starting-with-c.html",words:1800},
+  {day:3,postNum:2,phase:"Authority",keyword:"5 letter words ending in at",supporting:"words ending at",title:"5 Letter Words Ending in AT",url:"/5-letter-words-ending-in-at.html",words:1500},
+  {day:4,postNum:1,phase:"Authority",keyword:"5 letter words starting with d",supporting:"d words list",title:"5 Letter Words Starting With D",url:"/5-letter-words-starting-with-d.html",words:1800},
+  {day:4,postNum:2,phase:"Authority",keyword:"5 letter words with t and e",supporting:"t e words",title:"5 Letter Words With T and E",url:"/5-letter-words-with-t-and-e.html",words:1500},
+  {day:5,postNum:1,phase:"Authority",keyword:"5 letter words starting with e",supporting:"e words list",title:"5 Letter Words Starting With E",url:"/5-letter-words-starting-with-e.html",words:1800},
+  {day:5,postNum:2,phase:"Authority",keyword:"5 letter words ending in ing",supporting:"ing words",title:"5 Letter Words Ending in ING",url:"/5-letter-words-ending-in-ing.html",words:1500},
+  {day:6,postNum:1,phase:"Authority",keyword:"5 letter words starting with f",supporting:"f words list",title:"5 Letter Words Starting With F",url:"/5-letter-words-starting-with-f.html",words:1800},
+  {day:6,postNum:2,phase:"Authority",keyword:"5 letter words ending in er",supporting:"er words",title:"5 Letter Words Ending in ER",url:"/5-letter-words-ending-in-er.html",words:1500},
+  {day:7,postNum:1,phase:"Authority",keyword:"5 letter words starting with g",supporting:"g words list",title:"5 Letter Words Starting With G",url:"/5-letter-words-starting-with-g.html",words:1800},
+  {day:7,postNum:2,phase:"Authority",keyword:"5 letter words with s and t",supporting:"s t words",title:"5 Letter Words With S and T",url:"/5-letter-words-with-s-and-t.html",words:1500},
+  {day:8,postNum:1,phase:"Authority",keyword:"5 letter words starting with h",supporting:"h words list",title:"5 Letter Words Starting With H",url:"/5-letter-words-starting-with-h.html",words:1800},
+  {day:8,postNum:2,phase:"Authority",keyword:"5 letter words ending in ly",supporting:"ly words",title:"5 Letter Words Ending in LY",url:"/5-letter-words-ending-in-ly.html",words:1500},
+  {day:9,postNum:1,phase:"Authority",keyword:"5 letter words starting with i",supporting:"i words list",title:"5 Letter Words Starting With I",url:"/5-letter-words-starting-with-i.html",words:1800},
+  {day:9,postNum:2,phase:"Authority",keyword:"5 letter words with a and t",supporting:"a t words",title:"5 Letter Words With A and T",url:"/5-letter-words-with-a-and-t.html",words:1500},
+  {day:10,postNum:1,phase:"Authority",keyword:"5 letter words starting with j",supporting:"j words list",title:"5 Letter Words Starting With J",url:"/5-letter-words-starting-with-j.html",words:1800},
+  {day:10,postNum:2,phase:"Authority",keyword:"5 letter words ending in ed",supporting:"ed words",title:"5 Letter Words Ending in ED",url:"/5-letter-words-ending-in-ed.html",words:1500},
+  {day:11,postNum:1,phase:"Authority",keyword:"5 letter words starting with k",supporting:"k words list, words start k",title:"5 Letter Words Starting With K",url:"/5-letter-words-starting-with-k.html",words:1800},
+  {day:11,postNum:2,phase:"Authority",keyword:"5 letter words ending in al",supporting:"al ending words",title:"5 Letter Words Ending in AL",url:"/5-letter-words-ending-in-al.html",words:1500},
+  {day:12,postNum:1,phase:"Authority",keyword:"5 letter words starting with l",supporting:"l words list",title:"5 Letter Words Starting With L",url:"/5-letter-words-starting-with-l.html",words:1800},
+  {day:12,postNum:2,phase:"Authority",keyword:"5 letter words with r and e",supporting:"r e words",title:"5 Letter Words With R and E",url:"/5-letter-words-with-r-and-e.html",words:1500},
+  {day:13,postNum:1,phase:"Authority",keyword:"5 letter words starting with m",supporting:"m words list",title:"5 Letter Words Starting With M",url:"/5-letter-words-starting-with-m.html",words:1800},
+  {day:13,postNum:2,phase:"Authority",keyword:"5 letter words ending in ar",supporting:"ar ending words",title:"5 Letter Words Ending in AR",url:"/5-letter-words-ending-in-ar.html",words:1500},
+  {day:14,postNum:1,phase:"Authority",keyword:"5 letter words starting with n",supporting:"n words list",title:"5 Letter Words Starting With N",url:"/5-letter-words-starting-with-n.html",words:1800},
+  {day:14,postNum:2,phase:"Authority",keyword:"5 letter words with a and r",supporting:"a r words",title:"5 Letter Words With A and R",url:"/5-letter-words-with-a-and-r.html",words:1500},
+  {day:15,postNum:1,phase:"Authority",keyword:"5 letter words starting with o",supporting:"o words list",title:"5 Letter Words Starting With O",url:"/5-letter-words-starting-with-o.html",words:1800},
+  {day:15,postNum:2,phase:"Authority",keyword:"5 letter words ending in on",supporting:"on ending words",title:"5 Letter Words Ending in ON",url:"/5-letter-words-ending-in-on.html",words:1500},
+  {day:16,postNum:1,phase:"Authority",keyword:"5 letter words starting with p",supporting:"p words list",title:"5 Letter Words Starting With P",url:"/5-letter-words-starting-with-p.html",words:1800},
+  {day:16,postNum:2,phase:"Authority",keyword:"5 letter words with s and a",supporting:"s a words",title:"5 Letter Words With S and A",url:"/5-letter-words-with-s-and-a.html",words:1500},
+  {day:17,postNum:1,phase:"Authority",keyword:"5 letter words starting with q",supporting:"q words list",title:"5 Letter Words Starting With Q",url:"/5-letter-words-starting-with-q.html",words:1800},
+  {day:17,postNum:2,phase:"Authority",keyword:"5 letter words ending in en",supporting:"en ending words",title:"5 Letter Words Ending in EN",url:"/5-letter-words-ending-in-en.html",words:1500},
+  {day:18,postNum:1,phase:"Authority",keyword:"5 letter words starting with r",supporting:"r words list",title:"5 Letter Words Starting With R",url:"/5-letter-words-starting-with-r.html",words:1800},
+  {day:18,postNum:2,phase:"Authority",keyword:"5 letter words with e and t",supporting:"e t words",title:"5 Letter Words With E and T",url:"/5-letter-words-with-e-and-t.html",words:1500},
+  {day:19,postNum:1,phase:"Authority",keyword:"5 letter words starting with s",supporting:"s words list",title:"5 Letter Words Starting With S",url:"/5-letter-words-starting-with-s.html",words:1800},
+  {day:19,postNum:2,phase:"Authority",keyword:"5 letter words ending in st",supporting:"st ending words",title:"5 Letter Words Ending in ST",url:"/5-letter-words-ending-in-st.html",words:1500},
+  {day:20,postNum:1,phase:"Authority",keyword:"5 letter words starting with t",supporting:"t words list",title:"5 Letter Words Starting With T",url:"/5-letter-words-starting-with-t.html",words:1800},
+  {day:20,postNum:2,phase:"Authority",keyword:"5 letter words with a and e",supporting:"a e words",title:"5 Letter Words With A and E",url:"/5-letter-words-with-a-and-e.html",words:1500},
+  {day:21,postNum:1,phase:"Authority",keyword:"5 letter words starting with u",supporting:"u words list",title:"5 Letter Words Starting With U",url:"/5-letter-words-starting-with-u.html",words:1800},
+  {day:21,postNum:2,phase:"Authority",keyword:"5 letter words ending in us",supporting:"us ending words",title:"5 Letter Words Ending in US",url:"/5-letter-words-ending-in-us.html",words:1500},
+  {day:22,postNum:1,phase:"Authority",keyword:"5 letter words starting with v",supporting:"v words list",title:"5 Letter Words Starting With V",url:"/5-letter-words-starting-with-v.html",words:1800},
+  {day:22,postNum:2,phase:"Authority",keyword:"5 letter words with o and r",supporting:"o r words",title:"5 Letter Words With O and R",url:"/5-letter-words-with-o-and-r.html",words:1500},
+  {day:23,postNum:1,phase:"Authority",keyword:"5 letter words starting with w",supporting:"w words list",title:"5 Letter Words Starting With W",url:"/5-letter-words-starting-with-w.html",words:1800},
+  {day:23,postNum:2,phase:"Authority",keyword:"5 letter words ending in ow",supporting:"ow ending words",title:"5 Letter Words Ending in OW",url:"/5-letter-words-ending-in-ow.html",words:1500},
+  {day:24,postNum:1,phase:"Authority",keyword:"5 letter words starting with x",supporting:"x words list",title:"5 Letter Words Starting With X",url:"/5-letter-words-starting-with-x.html",words:1800},
+  {day:24,postNum:2,phase:"Authority",keyword:"5 letter words with i and n",supporting:"i n words",title:"5 Letter Words With I and N",url:"/5-letter-words-with-i-and-n.html",words:1500},
+  {day:25,postNum:1,phase:"Authority",keyword:"5 letter words starting with y",supporting:"y words list",title:"5 Letter Words Starting With Y",url:"/5-letter-words-starting-with-y.html",words:1800},
+  {day:25,postNum:2,phase:"Authority",keyword:"5 letter words ending in ay",supporting:"ay ending words",title:"5 Letter Words Ending in AY",url:"/5-letter-words-ending-in-ay.html",words:1500},
+  {day:26,postNum:1,phase:"Authority",keyword:"5 letter words starting with z",supporting:"z words list",title:"5 Letter Words Starting With Z",url:"/5-letter-words-starting-with-z.html",words:1800},
+  {day:26,postNum:2,phase:"Authority",keyword:"5 letter words with u and t",supporting:"u t words",title:"5 Letter Words With U and T",url:"/5-letter-words-with-u-and-t.html",words:1500},
+  {day:27,postNum:1,phase:"Authority",keyword:"5 letter words starting with a and ending in t",supporting:"a _ _ _ t words",title:"5 Letter Words Starting With A and Ending in T",url:"/5-letter-words-starting-with-a-ending-in-t.html",words:1500},
+  {day:27,postNum:2,phase:"Authority",keyword:"5 letter words with r and t",supporting:"r t words",title:"5 Letter Words With R and T",url:"/5-letter-words-with-r-and-t.html",words:1500},
+  {day:28,postNum:1,phase:"Authority",keyword:"5 letter words starting with s ending in e",supporting:"s _ _ _ e words",title:"5 Letter Words Starting With S Ending in E",url:"/5-letter-words-starting-with-s-ending-in-e.html",words:1500},
+  {day:28,postNum:2,phase:"Authority",keyword:"5 letter words ending in le",supporting:"le ending words",title:"5 Letter Words Ending in LE",url:"/5-letter-words-ending-in-le.html",words:1500},
+  {day:29,postNum:1,phase:"Authority",keyword:"5 letter words with a e i",supporting:"vowel words list",title:"5 Letter Words With A E I",url:"/5-letter-words-with-a-e-i.html",words:1500},
+  {day:29,postNum:2,phase:"Authority",keyword:"5 letter words ending in ch",supporting:"ch ending words",title:"5 Letter Words Ending in CH",url:"/5-letter-words-ending-in-ch.html",words:1500},
+  {day:30,postNum:1,phase:"Authority",keyword:"5 letter words with no vowels",supporting:"no vowel words",title:"5 Letter Words With No Vowels",url:"/5-letter-words-with-no-vowels.html",words:1500},
+  {day:30,postNum:2,phase:"Authority",keyword:"5 letter words with double letters",supporting:"double letter words",title:"5 Letter Words With Double Letters",url:"/5-letter-words-with-double-letters.html",words:1500},
+
+  // ── PHASE 2: RECENCY (Days 31–60) ───────────────────────
+  {day:31,postNum:1,phase:"Recency",keyword:"wordle answer today",supporting:"today wordle answer, wordle solution today",title:"Wordle Answer Today (Updated Daily Solution)",url:"/wordle-answer-today.html",words:1200},
+  {day:31,postNum:2,phase:"Recency",keyword:"5 letter words for wordle",supporting:"wordle words list, best wordle words",title:"5 Letter Words for Wordle (Best Picks)",url:"/5-letter-words-for-wordle.html",words:1500},
+  {day:31,postNum:3,phase:"Recency",keyword:"wordle hints today",supporting:"wordle clues today, hints wordle",title:"Wordle Hints Today (Daily Clues & Tips)",url:"/wordle-hints-today.html",words:1200},
+  {day:32,postNum:1,phase:"Recency",keyword:"wordle answer yesterday",supporting:"previous wordle answer",title:"Yesterday's Wordle Answer (Archive)",url:"/wordle-answer-yesterday.html",words:1000},
+  {day:32,postNum:2,phase:"Recency",keyword:"best starting words for wordle",supporting:"wordle best first words",title:"Best Starting Words for Wordle (Winning Strategy)",url:"/best-wordle-starting-words.html",words:1500},
+  {day:32,postNum:3,phase:"Recency",keyword:"wordle 5 letter words with a",supporting:"wordle words with a",title:"Wordle 5 Letter Words With A",url:"/wordle-5-letter-words-with-a.html",words:1500},
+  {day:33,postNum:1,phase:"Recency",keyword:"wordle answers archive",supporting:"wordle history answers",title:"Wordle Answers Archive (All Past Solutions)",url:"/wordle-answers-archive.html",words:1500},
+  {day:33,postNum:2,phase:"Recency",keyword:"wordle words with e",supporting:"wordle e words",title:"Wordle Words With E (Top Picks)",url:"/wordle-words-with-e.html",words:1500},
+  {day:33,postNum:3,phase:"Recency",keyword:"wordle tips and tricks",supporting:"how to win wordle",title:"Wordle Tips and Tricks to Win Daily",url:"/wordle-tips-and-tricks.html",words:1200},
+  {day:34,postNum:1,phase:"Recency",keyword:"wordle 5 letter words with s",supporting:"wordle s words",title:"Wordle 5 Letter Words With S",url:"/wordle-5-letter-words-with-s.html",words:1500},
+  {day:34,postNum:2,phase:"Recency",keyword:"wordle words with t",supporting:"wordle t words",title:"Wordle Words With T (Best Choices)",url:"/wordle-words-with-t.html",words:1500},
+  {day:34,postNum:3,phase:"Recency",keyword:"wordle solver words list",supporting:"wordle helper list",title:"Wordle Solver Words List (Complete Guide)",url:"/wordle-solver-words.html",words:1500},
+  {day:35,postNum:1,phase:"Recency",keyword:"wordle words with r",supporting:"wordle r words",title:"Wordle Words With R",url:"/wordle-words-with-r.html",words:1500},
+  {day:35,postNum:2,phase:"Recency",keyword:"wordle words with l",supporting:"wordle l words",title:"Wordle Words With L",url:"/wordle-words-with-l.html",words:1500},
+  {day:35,postNum:3,phase:"Recency",keyword:"wordle words with o",supporting:"wordle o words",title:"Wordle Words With O",url:"/wordle-words-with-o.html",words:1500},
+  {day:36,postNum:1,phase:"Recency",keyword:"wordle words with i",supporting:"wordle i words",title:"Wordle Words With I",url:"/wordle-words-with-i.html",words:1500},
+  {day:36,postNum:2,phase:"Recency",keyword:"wordle words with u",supporting:"wordle u words",title:"Wordle Words With U",url:"/wordle-words-with-u.html",words:1500},
+  {day:36,postNum:3,phase:"Recency",keyword:"wordle words with n",supporting:"wordle n words",title:"Wordle Words With N",url:"/wordle-words-with-n.html",words:1500},
+  {day:37,postNum:1,phase:"Recency",keyword:"wordle words with d",supporting:"wordle d words",title:"Wordle Words With D",url:"/wordle-words-with-d.html",words:1500},
+  {day:37,postNum:2,phase:"Recency",keyword:"wordle words with m",supporting:"wordle m words",title:"Wordle Words With M",url:"/wordle-words-with-m.html",words:1500},
+  {day:37,postNum:3,phase:"Recency",keyword:"wordle words with g",supporting:"wordle g words",title:"Wordle Words With G",url:"/wordle-words-with-g.html",words:1500},
+  {day:38,postNum:1,phase:"Recency",keyword:"wordle words with b",supporting:"wordle b words",title:"Wordle Words With B",url:"/wordle-words-with-b.html",words:1500},
+  {day:38,postNum:2,phase:"Recency",keyword:"wordle words with c",supporting:"wordle c words",title:"Wordle Words With C",url:"/wordle-words-with-c.html",words:1500},
+  {day:38,postNum:3,phase:"Recency",keyword:"wordle words with f",supporting:"wordle f words",title:"Wordle Words With F",url:"/wordle-words-with-f.html",words:1500},
+  {day:39,postNum:1,phase:"Recency",keyword:"wordle words with p",supporting:"wordle p words",title:"Wordle Words With P",url:"/wordle-words-with-p.html",words:1500},
+  {day:39,postNum:2,phase:"Recency",keyword:"wordle words with h",supporting:"wordle h words",title:"Wordle Words With H",url:"/wordle-words-with-h.html",words:1500},
+  {day:39,postNum:3,phase:"Recency",keyword:"wordle words with k",supporting:"wordle k words",title:"Wordle Words With K",url:"/wordle-words-with-k.html",words:1500},
+  {day:40,postNum:1,phase:"Recency",keyword:"wordle words with v",supporting:"wordle v words",title:"Wordle Words With V",url:"/wordle-words-with-v.html",words:1500},
+  {day:40,postNum:2,phase:"Recency",keyword:"wordle words with w",supporting:"wordle w words",title:"Wordle Words With W",url:"/wordle-words-with-w.html",words:1500},
+  {day:40,postNum:3,phase:"Recency",keyword:"wordle words with z",supporting:"wordle z words",title:"Wordle Words With Z",url:"/wordle-words-with-z.html",words:1500},
+  {day:41,postNum:1,phase:"Recency",keyword:"wordle words ending in e",supporting:"wordle ending e words",title:"Wordle Words Ending in E",url:"/wordle-words-ending-in-e.html",words:1500},
+  {day:41,postNum:2,phase:"Recency",keyword:"wordle words starting with s",supporting:"wordle s words",title:"Wordle Words Starting With S",url:"/wordle-words-starting-with-s.html",words:1500},
+  {day:41,postNum:3,phase:"Recency",keyword:"wordle words with a and e",supporting:"wordle a e words",title:"Wordle Words With A and E",url:"/wordle-words-with-a-and-e.html",words:1500},
+  {day:42,postNum:1,phase:"Recency",keyword:"wordle words ending in t",supporting:"ending t wordle words",title:"Wordle Words Ending in T",url:"/wordle-words-ending-in-t.html",words:1500},
+  {day:42,postNum:2,phase:"Recency",keyword:"wordle words starting with r",supporting:"wordle r start words",title:"Wordle Words Starting With R",url:"/wordle-words-starting-with-r.html",words:1500},
+  {day:42,postNum:3,phase:"Recency",keyword:"wordle words with o and e",supporting:"wordle o e words",title:"Wordle Words With O and E",url:"/wordle-words-with-o-and-e.html",words:1500},
+  {day:43,postNum:1,phase:"Recency",keyword:"wordle words ending in y",supporting:"ending y words",title:"Wordle Words Ending in Y",url:"/wordle-words-ending-in-y.html",words:1500},
+  {day:43,postNum:2,phase:"Recency",keyword:"wordle words starting with t",supporting:"wordle t start words",title:"Wordle Words Starting With T",url:"/wordle-words-starting-with-t.html",words:1500},
+  {day:43,postNum:3,phase:"Recency",keyword:"wordle words with i and e",supporting:"wordle i e words",title:"Wordle Words With I and E",url:"/wordle-words-with-i-and-e.html",words:1500},
+  {day:44,postNum:1,phase:"Recency",keyword:"wordle words ending in r",supporting:"ending r words",title:"Wordle Words Ending in R",url:"/wordle-words-ending-in-r.html",words:1500},
+  {day:44,postNum:2,phase:"Recency",keyword:"wordle words starting with l",supporting:"wordle l start words",title:"Wordle Words Starting With L",url:"/wordle-words-starting-with-l.html",words:1500},
+  {day:44,postNum:3,phase:"Recency",keyword:"wordle words with a and o",supporting:"wordle a o words",title:"Wordle Words With A and O",url:"/wordle-words-with-a-and-o.html",words:1500},
+  {day:45,postNum:1,phase:"Recency",keyword:"wordle words ending in n",supporting:"ending n words",title:"Wordle Words Ending in N",url:"/wordle-words-ending-in-n.html",words:1500},
+  {day:45,postNum:2,phase:"Recency",keyword:"wordle words starting with p",supporting:"wordle p start words",title:"Wordle Words Starting With P",url:"/wordle-words-starting-with-p.html",words:1500},
+  {day:45,postNum:3,phase:"Recency",keyword:"wordle words with e and o",supporting:"wordle e o words",title:"Wordle Words With E and O",url:"/wordle-words-with-e-and-o.html",words:1500},
+  {day:46,postNum:1,phase:"Recency",keyword:"wordle words ending in s",supporting:"ending s words",title:"Wordle Words Ending in S",url:"/wordle-words-ending-in-s.html",words:1500},
+  {day:46,postNum:2,phase:"Recency",keyword:"wordle words starting with m",supporting:"wordle m start words",title:"Wordle Words Starting With M",url:"/wordle-words-starting-with-m.html",words:1500},
+  {day:46,postNum:3,phase:"Recency",keyword:"wordle words with a and i",supporting:"wordle a i words",title:"Wordle Words With A and I",url:"/wordle-words-with-a-and-i.html",words:1500},
+  {day:47,postNum:1,phase:"Recency",keyword:"wordle words ending in d",supporting:"ending d words",title:"Wordle Words Ending in D",url:"/wordle-words-ending-in-d.html",words:1500},
+  {day:47,postNum:2,phase:"Recency",keyword:"wordle words starting with n",supporting:"wordle n start words",title:"Wordle Words Starting With N",url:"/wordle-words-starting-with-n.html",words:1500},
+  {day:47,postNum:3,phase:"Recency",keyword:"wordle words with e and a",supporting:"wordle e a words",title:"Wordle Words With E and A",url:"/wordle-words-with-e-and-a.html",words:1500},
+  {day:48,postNum:1,phase:"Recency",keyword:"wordle words ending in l",supporting:"ending l words",title:"Wordle Words Ending in L",url:"/wordle-words-ending-in-l.html",words:1500},
+  {day:48,postNum:2,phase:"Recency",keyword:"wordle words starting with d",supporting:"wordle d start words",title:"Wordle Words Starting With D",url:"/wordle-words-starting-with-d.html",words:1500},
+  {day:48,postNum:3,phase:"Recency",keyword:"wordle words with o and a",supporting:"wordle o a words",title:"Wordle Words With O and A",url:"/wordle-words-with-o-and-a.html",words:1500},
+  {day:49,postNum:1,phase:"Recency",keyword:"wordle words ending in g",supporting:"ending g words",title:"Wordle Words Ending in G",url:"/wordle-words-ending-in-g.html",words:1500},
+  {day:49,postNum:2,phase:"Recency",keyword:"wordle words starting with b",supporting:"wordle b start words",title:"Wordle Words Starting With B",url:"/wordle-words-starting-with-b.html",words:1500},
+  {day:49,postNum:3,phase:"Recency",keyword:"wordle words with i and o",supporting:"wordle i o words",title:"Wordle Words With I and O",url:"/wordle-words-with-i-and-o.html",words:1500},
+  {day:50,postNum:1,phase:"Recency",keyword:"wordle words ending in p",supporting:"ending p words",title:"Wordle Words Ending in P",url:"/wordle-words-ending-in-p.html",words:1500},
+  {day:50,postNum:2,phase:"Recency",keyword:"wordle words starting with c",supporting:"wordle c start words",title:"Wordle Words Starting With C",url:"/wordle-words-starting-with-c.html",words:1500},
+  {day:50,postNum:3,phase:"Recency",keyword:"wordle words with u and a",supporting:"wordle u a words",title:"Wordle Words With U and A",url:"/wordle-words-with-u-and-a.html",words:1500},
+  {day:51,postNum:1,phase:"Recency",keyword:"wordle words ending in m",supporting:"ending m words",title:"Wordle Words Ending in M",url:"/wordle-words-ending-in-m.html",words:1500},
+  {day:51,postNum:2,phase:"Recency",keyword:"wordle words starting with g",supporting:"wordle g start words",title:"Wordle Words Starting With G",url:"/wordle-words-starting-with-g.html",words:1500},
+  {day:51,postNum:3,phase:"Recency",keyword:"wordle words with e and i",supporting:"wordle e i words",title:"Wordle Words With E and I",url:"/wordle-words-with-e-and-i.html",words:1500},
+  {day:52,postNum:1,phase:"Recency",keyword:"wordle words ending in b",supporting:"ending b words",title:"Wordle Words Ending in B",url:"/wordle-words-ending-in-b.html",words:1500},
+  {day:52,postNum:2,phase:"Recency",keyword:"wordle words starting with f",supporting:"wordle f start words",title:"Wordle Words Starting With F",url:"/wordle-words-starting-with-f.html",words:1500},
+  {day:52,postNum:3,phase:"Recency",keyword:"wordle words with o and u",supporting:"wordle o u words",title:"Wordle Words With O and U",url:"/wordle-words-with-o-and-u.html",words:1500},
+  {day:53,postNum:1,phase:"Recency",keyword:"wordle words ending in k",supporting:"ending k words",title:"Wordle Words Ending in K",url:"/wordle-words-ending-in-k.html",words:1500},
+  {day:53,postNum:2,phase:"Recency",keyword:"wordle words starting with h",supporting:"wordle h start words",title:"Wordle Words Starting With H",url:"/wordle-words-starting-with-h.html",words:1500},
+  {day:53,postNum:3,phase:"Recency",keyword:"wordle words with a and u",supporting:"wordle a u words",title:"Wordle Words With A and U",url:"/wordle-words-with-a-and-u.html",words:1500},
+  {day:54,postNum:1,phase:"Recency",keyword:"wordle words ending in w",supporting:"ending w words",title:"Wordle Words Ending in W",url:"/wordle-words-ending-in-w.html",words:1500},
+  {day:54,postNum:2,phase:"Recency",keyword:"wordle words starting with j",supporting:"wordle j start words",title:"Wordle Words Starting With J",url:"/wordle-words-starting-with-j.html",words:1500},
+  {day:54,postNum:3,phase:"Recency",keyword:"wordle words with i and a",supporting:"wordle i a words",title:"Wordle Words With I and A",url:"/wordle-words-with-i-and-a.html",words:1500},
+  {day:55,postNum:1,phase:"Recency",keyword:"wordle words ending in x",supporting:"ending x words",title:"Wordle Words Ending in X",url:"/wordle-words-ending-in-x.html",words:1500},
+  {day:55,postNum:2,phase:"Recency",keyword:"wordle words starting with k",supporting:"wordle k start words",title:"Wordle Words Starting With K",url:"/wordle-words-starting-with-k.html",words:1500},
+  {day:55,postNum:3,phase:"Recency",keyword:"wordle words with e and u",supporting:"wordle e u words",title:"Wordle Words With E and U",url:"/wordle-words-with-e-and-u.html",words:1500},
+  {day:56,postNum:1,phase:"Recency",keyword:"wordle words ending in z",supporting:"ending z words",title:"Wordle Words Ending in Z",url:"/wordle-words-ending-in-z.html",words:1500},
+  {day:56,postNum:2,phase:"Recency",keyword:"wordle words starting with q",supporting:"wordle q start words",title:"Wordle Words Starting With Q",url:"/wordle-words-starting-with-q.html",words:1500},
+  {day:56,postNum:3,phase:"Recency",keyword:"wordle words with a and y",supporting:"wordle a y words",title:"Wordle Words With A and Y",url:"/wordle-words-with-a-and-y.html",words:1500},
+  {day:57,postNum:1,phase:"Recency",keyword:"wordle words ending in h",supporting:"ending h words",title:"Wordle Words Ending in H",url:"/wordle-words-ending-in-h.html",words:1500},
+  {day:57,postNum:2,phase:"Recency",keyword:"wordle words starting with x",supporting:"wordle x start words",title:"Wordle Words Starting With X",url:"/wordle-words-starting-with-x.html",words:1500},
+  {day:57,postNum:3,phase:"Recency",keyword:"wordle words with e and y",supporting:"wordle e y words",title:"Wordle Words With E and Y",url:"/wordle-words-with-e-and-y.html",words:1500},
+  {day:58,postNum:1,phase:"Recency",keyword:"wordle words ending in j",supporting:"ending j words",title:"Wordle Words Ending in J",url:"/wordle-words-ending-in-j.html",words:1500},
+  {day:58,postNum:2,phase:"Recency",keyword:"wordle words starting with y",supporting:"wordle y start words",title:"Wordle Words Starting With Y",url:"/wordle-words-starting-with-y.html",words:1500},
+  {day:58,postNum:3,phase:"Recency",keyword:"wordle words with o and y",supporting:"wordle o y words",title:"Wordle Words With O and Y",url:"/wordle-words-with-o-and-y.html",words:1500},
+  {day:59,postNum:1,phase:"Recency",keyword:"wordle words ending in q",supporting:"ending q words",title:"Wordle Words Ending in Q",url:"/wordle-words-ending-in-q.html",words:1500},
+  {day:59,postNum:2,phase:"Recency",keyword:"wordle words starting with z",supporting:"wordle z start words",title:"Wordle Words Starting With Z",url:"/wordle-words-starting-with-z.html",words:1500},
+  {day:59,postNum:3,phase:"Recency",keyword:"wordle words with u and y",supporting:"wordle u y words",title:"Wordle Words With U and Y",url:"/wordle-words-with-u-and-y.html",words:1500},
+  {day:60,postNum:1,phase:"Recency",keyword:"wordle words ending in vowel",supporting:"vowel ending words",title:"Wordle Words Ending in Vowels",url:"/wordle-words-ending-in-vowel.html",words:1500},
+  {day:60,postNum:2,phase:"Recency",keyword:"wordle words with no vowels",supporting:"no vowel wordle words",title:"Wordle Words With No Vowels",url:"/wordle-words-no-vowels.html",words:1500},
+  {day:60,postNum:3,phase:"Recency",keyword:"wordle rare words list",supporting:"uncommon wordle words",title:"Rare Wordle Words List (Uncommon Picks)",url:"/rare-wordle-words.html",words:1500},
+
+  // ── PHASE 3: SCALING (Days 61–70) ───────────────────────
+  {day:61,postNum:1,phase:"Scaling",keyword:"5 letter words with a and e",supporting:"a e words list",title:"5 Letter Words With A and E",url:"/5-letter-words-with-a-and-e.html",words:1500},
+  {day:61,postNum:2,phase:"Scaling",keyword:"5 letter words with s and t",supporting:"s t words list",title:"5 Letter Words With S and T",url:"/5-letter-words-with-s-and-t.html",words:1500},
+  {day:61,postNum:3,phase:"Scaling",keyword:"5 letter words ending in er",supporting:"er ending words",title:"5 Letter Words Ending in ER",url:"/5-letter-words-ending-in-er.html",words:1500},
+  {day:62,postNum:1,phase:"Scaling",keyword:"5 letter words with r and e",supporting:"r e words",title:"5 Letter Words With R and E",url:"/5-letter-words-with-r-and-e.html",words:1500},
+  {day:62,postNum:2,phase:"Scaling",keyword:"5 letter words ending in ly",supporting:"ly ending words",title:"5 Letter Words Ending in LY",url:"/5-letter-words-ending-in-ly.html",words:1500},
+  {day:62,postNum:3,phase:"Scaling",keyword:"5 letter words with a and t",supporting:"a t words",title:"5 Letter Words With A and T",url:"/5-letter-words-with-a-and-t.html",words:1500},
+  {day:63,postNum:1,phase:"Scaling",keyword:"5 letter words with e and t",supporting:"e t words",title:"5 Letter Words With E and T",url:"/5-letter-words-with-e-and-t.html",words:1500},
+  {day:63,postNum:2,phase:"Scaling",keyword:"5 letter words ending in st",supporting:"st ending words",title:"5 Letter Words Ending in ST",url:"/5-letter-words-ending-in-st.html",words:1500},
+  {day:63,postNum:3,phase:"Scaling",keyword:"5 letter words with o and r",supporting:"o r words",title:"5 Letter Words With O and R",url:"/5-letter-words-with-o-and-r.html",words:1500},
+  {day:64,postNum:1,phase:"Scaling",keyword:"5 letter words ending in on",supporting:"on ending words",title:"5 Letter Words Ending in ON",url:"/5-letter-words-ending-in-on.html",words:1500},
+  {day:64,postNum:2,phase:"Scaling",keyword:"5 letter words with s and a",supporting:"s a words",title:"5 Letter Words With S and A",url:"/5-letter-words-with-s-and-a.html",words:1500},
+  {day:64,postNum:3,phase:"Scaling",keyword:"5 letter words ending in en",supporting:"en ending words",title:"5 Letter Words Ending in EN",url:"/5-letter-words-ending-in-en.html",words:1500},
+  {day:65,postNum:1,phase:"Scaling",keyword:"5 letter words ending in ow",supporting:"ow ending words",title:"5 Letter Words Ending in OW",url:"/5-letter-words-ending-in-ow.html",words:1500},
+  {day:65,postNum:2,phase:"Scaling",keyword:"5 letter words with i and n",supporting:"i n words",title:"5 Letter Words With I and N",url:"/5-letter-words-with-i-and-n.html",words:1500},
+  {day:65,postNum:3,phase:"Scaling",keyword:"5 letter words ending in ay",supporting:"ay ending words",title:"5 Letter Words Ending in AY",url:"/5-letter-words-ending-in-ay.html",words:1500},
+  {day:66,postNum:1,phase:"Scaling",keyword:"5 letter words ending in ch",supporting:"ch ending words",title:"5 Letter Words Ending in CH",url:"/5-letter-words-ending-in-ch.html",words:1500},
+  {day:66,postNum:2,phase:"Scaling",keyword:"5 letter words with u and t",supporting:"u t words",title:"5 Letter Words With U and T",url:"/5-letter-words-with-u-and-t.html",words:1500},
+  {day:66,postNum:3,phase:"Scaling",keyword:"5 letter words ending in le",supporting:"le ending words",title:"5 Letter Words Ending in LE",url:"/5-letter-words-ending-in-le.html",words:1500},
+  {day:67,postNum:1,phase:"Scaling",keyword:"5 letter words with r and t",supporting:"r t words",title:"5 Letter Words With R and T",url:"/5-letter-words-with-r-and-t.html",words:1500},
+  {day:67,postNum:2,phase:"Scaling",keyword:"5 letter words ending in al",supporting:"al ending words",title:"5 Letter Words Ending in AL",url:"/5-letter-words-ending-in-al.html",words:1500},
+  {day:67,postNum:3,phase:"Scaling",keyword:"5 letter words with a and r",supporting:"a r words",title:"5 Letter Words With A and R",url:"/5-letter-words-with-a-and-r.html",words:1500},
+  {day:68,postNum:1,phase:"Scaling",keyword:"5 letter words ending in ar",supporting:"ar ending words",title:"5 Letter Words Ending in AR",url:"/5-letter-words-ending-in-ar.html",words:1500},
+  {day:68,postNum:2,phase:"Scaling",keyword:"5 letter words with a and e",supporting:"a e words",title:"5 Letter Words With A and E",url:"/5-letter-words-with-a-and-e.html",words:1500},
+  {day:68,postNum:3,phase:"Scaling",keyword:"5 letter words ending in us",supporting:"us ending words",title:"5 Letter Words Ending in US",url:"/5-letter-words-ending-in-us.html",words:1500},
+  {day:69,postNum:1,phase:"Scaling",keyword:"5 letter words with o and r",supporting:"o r words",title:"5 Letter Words With O and R",url:"/5-letter-words-with-o-and-r.html",words:1500},
+  {day:69,postNum:2,phase:"Scaling",keyword:"5 letter words ending in st",supporting:"st ending words",title:"5 Letter Words Ending in ST",url:"/5-letter-words-ending-in-st.html",words:1500},
+  {day:69,postNum:3,phase:"Scaling",keyword:"5 letter words with e and t",supporting:"e t words",title:"5 Letter Words With E and T",url:"/5-letter-words-with-e-and-t.html",words:1500},
+  {day:70,postNum:1,phase:"Scaling",keyword:"5 letter words ending in ed",supporting:"ed ending words",title:"5 Letter Words Ending in ED",url:"/5-letter-words-ending-in-ed.html",words:1500},
+  {day:70,postNum:2,phase:"Scaling",keyword:"5 letter words with a and t",supporting:"a t words",title:"5 Letter Words With A and T",url:"/5-letter-words-with-a-and-t.html",words:1500},
+  {day:70,postNum:3,phase:"Scaling",keyword:"5 letter words ending in ing",supporting:"ing ending words",title:"5 Letter Words Ending in ING",url:"/5-letter-words-ending-in-ing.html",words:1500},
+
+  // ── PHASE 4: HIGH ROI + TOOL (Days 71–100) ──────────────
+  {day:71,postNum:1,phase:"ScalingROI",keyword:"unscramble words",supporting:"word unscrambler, letter solver",title:"Unscramble Words Tool (Find Words Fast)",url:"/unscramble-words-tool.html",words:1800},
+  {day:71,postNum:2,phase:"ScalingROI",keyword:"word finder tool",supporting:"find words from letters",title:"Word Finder Tool (Generate Words Instantly)",url:"/word-finder-tool.html",words:1500},
+  {day:71,postNum:3,phase:"ScalingROI",keyword:"anagram solver online",supporting:"anagram generator",title:"Anagram Solver Online (Free Tool)",url:"/anagram-solver-online.html",words:1500},
+  {day:72,postNum:1,phase:"ScalingROI",keyword:"words from letters",supporting:"make words from letters",title:"Words From Letters (Best Generator Tool)",url:"/words-from-letters.html",words:1500},
+  {day:72,postNum:2,phase:"ScalingROI",keyword:"scrabble word finder",supporting:"scrabble helper tool",title:"Scrabble Word Finder Tool (Win Every Game)",url:"/scrabble-word-finder.html",words:1500},
+  {day:72,postNum:3,phase:"ScalingROI",keyword:"word generator tool",supporting:"random word generator",title:"Word Generator Tool (Instant Word Lists)",url:"/word-generator-tool.html",words:1500},
+  {day:73,postNum:1,phase:"ScalingROI",keyword:"5 letter words solver",supporting:"wordle solver tool",title:"5 Letter Word Solver (Wordle Helper Tool)",url:"/5-letter-word-solver.html",words:1500},
+  {day:73,postNum:2,phase:"ScalingROI",keyword:"wordle solver tool",supporting:"solve wordle fast",title:"Wordle Solver Tool (Get Answers Fast)",url:"/wordle-solver-tool.html",words:1500},
+  {day:73,postNum:3,phase:"ScalingROI",keyword:"word cheat tool",supporting:"cheat word games",title:"Word Cheat Tool (Win Word Games Easily)",url:"/word-cheat-tool.html",words:1500},
+  {day:74,postNum:1,phase:"ScalingROI",keyword:"words that start with any letter tool",supporting:"custom word finder",title:"Word Finder by Starting Letter (Tool)",url:"/word-finder-by-letter.html",words:1500},
+  {day:74,postNum:2,phase:"ScalingROI",keyword:"words that end with letters tool",supporting:"ending word finder",title:"Word Finder by Ending Letters (Tool)",url:"/word-ending-finder.html",words:1500},
+  {day:74,postNum:3,phase:"ScalingROI",keyword:"words with pattern tool",supporting:"pattern word solver",title:"Word Pattern Solver Tool (Fill Missing Letters)",url:"/word-pattern-solver.html",words:1500},
+  {day:75,postNum:1,phase:"ScalingROI",keyword:"scrabble cheat words",supporting:"scrabble cheat list",title:"Scrabble Cheat Words (High Score Words List)",url:"/scrabble-cheat-words.html",words:1500},
+  {day:75,postNum:2,phase:"ScalingROI",keyword:"highest scoring scrabble words",supporting:"scrabble high score",title:"Highest Scoring Scrabble Words List",url:"/highest-scoring-scrabble-words.html",words:1500},
+  {day:75,postNum:3,phase:"ScalingROI",keyword:"scrabble 2 letter words",supporting:"scrabble short words",title:"Scrabble 2 Letter Words (Complete List)",url:"/scrabble-2-letter-words.html",words:1500},
+  {day:76,postNum:1,phase:"ScalingROI",keyword:"scrabble 3 letter words",supporting:"scrabble 3 letter list",title:"Scrabble 3 Letter Words List",url:"/scrabble-3-letter-words.html",words:1500},
+  {day:76,postNum:2,phase:"ScalingROI",keyword:"scrabble 4 letter words",supporting:"scrabble 4 letter list",title:"Scrabble 4 Letter Words List",url:"/scrabble-4-letter-words.html",words:1500},
+  {day:76,postNum:3,phase:"ScalingROI",keyword:"scrabble 5 letter words",supporting:"scrabble 5 letter list",title:"Scrabble 5 Letter Words List",url:"/scrabble-5-letter-words.html",words:1500},
+  {day:77,postNum:1,phase:"ScalingROI",keyword:"easy wordle words",supporting:"easiest wordle answers",title:"Easy Wordle Words (Win Fast)",url:"/easy-wordle-words.html",words:1500},
+  {day:77,postNum:2,phase:"ScalingROI",keyword:"hardest wordle words",supporting:"tough wordle answers",title:"Hardest Wordle Words (Challenge Yourself)",url:"/hardest-wordle-words.html",words:1500},
+  {day:77,postNum:3,phase:"ScalingROI",keyword:"wordle uncommon words",supporting:"rare wordle answers",title:"Rare Wordle Words List",url:"/rare-wordle-words-list.html",words:1500},
+  {day:78,postNum:1,phase:"ScalingROI",keyword:"words without vowels",supporting:"no vowel words",title:"Words Without Vowels (Complete List)",url:"/words-without-vowels.html",words:1500},
+  {day:78,postNum:2,phase:"ScalingROI",keyword:"longest words in english",supporting:"longest words list",title:"Longest Words in English (Full List)",url:"/longest-words-in-english.html",words:1500},
+  {day:78,postNum:3,phase:"ScalingROI",keyword:"shortest words in english",supporting:"short words list",title:"Shortest Words in English",url:"/shortest-words-in-english.html",words:1500},
+  {day:79,postNum:1,phase:"ScalingROI",keyword:"palindrome words",supporting:"palindrome examples",title:"Palindrome Words List (Examples & Meaning)",url:"/palindrome-words.html",words:1500},
+  {day:79,postNum:2,phase:"ScalingROI",keyword:"common english words list",supporting:"most used words",title:"Most Common English Words List",url:"/common-english-words.html",words:1500},
+  {day:79,postNum:3,phase:"ScalingROI",keyword:"rare english words",supporting:"uncommon words list",title:"Rare English Words List (Advanced Vocabulary)",url:"/rare-english-words.html",words:1500},
+  {day:80,postNum:1,phase:"ScalingROI",keyword:"words with double letters",supporting:"double letter words",title:"Words With Double Letters",url:"/words-with-double-letters.html",words:1500},
+  {day:80,postNum:2,phase:"ScalingROI",keyword:"words with silent letters",supporting:"silent letter words",title:"Words With Silent Letters",url:"/words-with-silent-letters.html",words:1500},
+  {day:80,postNum:3,phase:"ScalingROI",keyword:"words with repeated letters",supporting:"repeated letters words",title:"Words With Repeated Letters",url:"/words-with-repeated-letters.html",words:1500},
+  {day:81,postNum:1,phase:"ScalingROI",keyword:"7 letter words list",supporting:"seven letter words",title:"7 Letter Words List",url:"/7-letter-words.html",words:1500},
+  {day:81,postNum:2,phase:"ScalingROI",keyword:"6 letter words list",supporting:"six letter words",title:"6 Letter Words List",url:"/6-letter-words.html",words:1500},
+  {day:81,postNum:3,phase:"ScalingROI",keyword:"8 letter words list",supporting:"eight letter words",title:"8 Letter Words List",url:"/8-letter-words.html",words:1500},
+  {day:82,postNum:1,phase:"ScalingROI",keyword:"words starting with all letters",supporting:"alphabet words list",title:"Words Starting With All Letters (A–Z)",url:"/words-starting-with-all-letters.html",words:1500},
+  {day:82,postNum:2,phase:"ScalingROI",keyword:"words ending with all letters",supporting:"ending words list",title:"Words Ending With All Letters (A–Z)",url:"/words-ending-with-all-letters.html",words:1500},
+  {day:82,postNum:3,phase:"ScalingROI",keyword:"words with all vowels",supporting:"vowel words",title:"Words With All Vowels",url:"/words-with-all-vowels.html",words:1500},
+  {day:83,postNum:1,phase:"ScalingROI",keyword:"crossword solver",supporting:"crossword helper",title:"Crossword Solver Tool",url:"/crossword-solver.html",words:1500},
+  {day:83,postNum:2,phase:"ScalingROI",keyword:"crossword answers today",supporting:"crossword solution",title:"Crossword Answers Today",url:"/crossword-answers-today.html",words:1500},
+  {day:83,postNum:3,phase:"ScalingROI",keyword:"crossword clues answers",supporting:"crossword help",title:"Crossword Clues & Answers Guide",url:"/crossword-clues-answers.html",words:1500},
+  {day:84,postNum:1,phase:"ScalingROI",keyword:"hangman words list",supporting:"hangman solver",title:"Hangman Words List",url:"/hangman-words.html",words:1500},
+  {day:84,postNum:2,phase:"ScalingROI",keyword:"hangman solver tool",supporting:"hangman cheat",title:"Hangman Solver Tool",url:"/hangman-solver.html",words:1500},
+  {day:84,postNum:3,phase:"ScalingROI",keyword:"hangman easy words",supporting:"hangman words easy",title:"Easy Hangman Words",url:"/easy-hangman-words.html",words:1500},
+  {day:85,postNum:1,phase:"ScalingROI",keyword:"word games list",supporting:"best word games",title:"Best Word Games List",url:"/best-word-games.html",words:1500},
+  {day:85,postNum:2,phase:"ScalingROI",keyword:"word puzzle games",supporting:"word puzzle ideas",title:"Word Puzzle Games Guide",url:"/word-puzzle-games.html",words:1500},
+  {day:85,postNum:3,phase:"ScalingROI",keyword:"online word games free",supporting:"free word games",title:"Free Online Word Games",url:"/free-online-word-games.html",words:1500},
+  {day:86,postNum:1,phase:"ScalingROI",keyword:"words that rhyme list",supporting:"rhyming words",title:"Rhyming Words List",url:"/rhyming-words.html",words:1500},
+  {day:86,postNum:2,phase:"ScalingROI",keyword:"rhyming words generator",supporting:"rhyme tool",title:"Rhyming Words Generator Tool",url:"/rhyming-words-generator.html",words:1500},
+  {day:86,postNum:3,phase:"ScalingROI",keyword:"words that sound same",supporting:"homophones",title:"Words That Sound the Same (Homophones)",url:"/homophones-words.html",words:1500},
+  {day:87,postNum:1,phase:"ScalingROI",keyword:"synonyms list",supporting:"synonyms examples",title:"Synonyms List (Common Words)",url:"/synonyms-list.html",words:1500},
+  {day:87,postNum:2,phase:"ScalingROI",keyword:"antonyms list",supporting:"opposite words",title:"Antonyms List (Opposite Words)",url:"/antonyms-list.html",words:1500},
+  {day:87,postNum:3,phase:"ScalingROI",keyword:"vocabulary words list",supporting:"vocab words",title:"Vocabulary Words List",url:"/vocabulary-words.html",words:1500},
+  {day:88,postNum:1,phase:"ScalingROI",keyword:"english words list pdf",supporting:"word list download",title:"English Words List PDF (Download)",url:"/english-words-list-pdf.html",words:1500},
+  {day:88,postNum:2,phase:"ScalingROI",keyword:"spelling words list",supporting:"spelling words",title:"Spelling Words List",url:"/spelling-words.html",words:1500},
+  {day:88,postNum:3,phase:"ScalingROI",keyword:"common misspelled words",supporting:"spelling mistakes",title:"Common Misspelled Words",url:"/common-misspelled-words.html",words:1500},
+  {day:89,postNum:1,phase:"ScalingROI",keyword:"words with meanings",supporting:"english words meaning",title:"Words With Meanings List",url:"/words-with-meanings.html",words:1500},
+  {day:89,postNum:2,phase:"ScalingROI",keyword:"advanced english words",supporting:"advanced vocab",title:"Advanced English Words List",url:"/advanced-english-words.html",words:1500},
+  {day:89,postNum:3,phase:"ScalingROI",keyword:"basic english words",supporting:"basic vocab",title:"Basic English Words List",url:"/basic-english-words.html",words:1500},
+  {day:90,postNum:1,phase:"ScalingROI",keyword:"english words for beginners",supporting:"beginner vocab",title:"English Words for Beginners",url:"/english-words-for-beginners.html",words:1500},
+  {day:90,postNum:2,phase:"ScalingROI",keyword:"english words for kids",supporting:"kids vocabulary",title:"English Words for Kids",url:"/english-words-for-kids.html",words:1500},
+  {day:90,postNum:3,phase:"ScalingROI",keyword:"daily use english words",supporting:"common daily words",title:"Daily Use English Words",url:"/daily-use-english-words.html",words:1500},
+  {day:91,postNum:1,phase:"ScalingROI",keyword:"words with qu",supporting:"qu words list",title:"Words With QU (Complete List)",url:"/words-with-qu.html",words:1500},
+  {day:91,postNum:2,phase:"ScalingROI",keyword:"words with x",supporting:"x words list",title:"Words With X (Complete List)",url:"/words-with-x.html",words:1500},
+  {day:91,postNum:3,phase:"ScalingROI",keyword:"words with z",supporting:"z words list",title:"Words With Z (Complete List)",url:"/words-with-z.html",words:1500},
+  {day:92,postNum:1,phase:"ScalingROI",keyword:"words with j",supporting:"j words list",title:"Words With J (Complete List)",url:"/words-with-j.html",words:1500},
+  {day:92,postNum:2,phase:"ScalingROI",keyword:"words with k",supporting:"k words list",title:"Words With K (Complete List)",url:"/words-with-k.html",words:1500},
+  {day:92,postNum:3,phase:"ScalingROI",keyword:"words with v",supporting:"v words list",title:"Words With V (Complete List)",url:"/words-with-v.html",words:1500},
+  {day:93,postNum:1,phase:"ScalingROI",keyword:"5 letter words with qu",supporting:"qu 5 letter words",title:"5 Letter Words With QU",url:"/5-letter-words-with-qu.html",words:1500},
+  {day:93,postNum:2,phase:"ScalingROI",keyword:"5 letter words with x",supporting:"x 5 letter words",title:"5 Letter Words With X",url:"/5-letter-words-with-x.html",words:1500},
+  {day:93,postNum:3,phase:"ScalingROI",keyword:"5 letter words with z",supporting:"z 5 letter words",title:"5 Letter Words With Z",url:"/5-letter-words-with-z.html",words:1500},
+  {day:94,postNum:1,phase:"ScalingROI",keyword:"5 letter words with j",supporting:"j 5 letter words",title:"5 Letter Words With J",url:"/5-letter-words-with-j.html",words:1500},
+  {day:94,postNum:2,phase:"ScalingROI",keyword:"5 letter words with k",supporting:"k 5 letter words",title:"5 Letter Words With K",url:"/5-letter-words-with-k.html",words:1500},
+  {day:94,postNum:3,phase:"ScalingROI",keyword:"5 letter words with v",supporting:"v 5 letter words",title:"5 Letter Words With V",url:"/5-letter-words-with-v.html",words:1500},
+  {day:95,postNum:1,phase:"ScalingROI",keyword:"scrabble words with q",supporting:"q scrabble words",title:"Scrabble Words With Q (High Score List)",url:"/scrabble-words-with-q.html",words:1500},
+  {day:95,postNum:2,phase:"ScalingROI",keyword:"scrabble words with z",supporting:"z scrabble words",title:"Scrabble Words With Z (High Score List)",url:"/scrabble-words-with-z.html",words:1500},
+  {day:95,postNum:3,phase:"ScalingROI",keyword:"scrabble words with x",supporting:"x scrabble words",title:"Scrabble Words With X (High Score List)",url:"/scrabble-words-with-x.html",words:1500},
+  {day:96,postNum:1,phase:"ScalingROI",keyword:"words with q no u",supporting:"q without u words",title:"Words With Q But No U (Complete List)",url:"/words-with-q-no-u.html",words:1500},
+  {day:96,postNum:2,phase:"ScalingROI",keyword:"words with double vowels",supporting:"vowel words",title:"Words With Double Vowels",url:"/words-with-double-vowels.html",words:1500},
+  {day:96,postNum:3,phase:"ScalingROI",keyword:"words with consonant clusters",supporting:"cluster words",title:"Words With Consonant Clusters",url:"/words-with-consonant-clusters.html",words:1500},
+  {day:97,postNum:1,phase:"ScalingROI",keyword:"words with only consonants",supporting:"no vowel words",title:"Words With Only Consonants",url:"/words-with-only-consonants.html",words:1500},
+  {day:97,postNum:2,phase:"ScalingROI",keyword:"words with repeating vowels",supporting:"repeated vowels",title:"Words With Repeating Vowels",url:"/words-with-repeating-vowels.html",words:1500},
+  {day:97,postNum:3,phase:"ScalingROI",keyword:"words with rare letters",supporting:"uncommon letters words",title:"Words With Rare Letters",url:"/words-with-rare-letters.html",words:1500},
+  {day:98,postNum:1,phase:"ScalingROI",keyword:"best scrabble words list",supporting:"top scrabble words",title:"Best Scrabble Words List (Top Scoring)",url:"/best-scrabble-words.html",words:1500},
+  {day:98,postNum:2,phase:"ScalingROI",keyword:"best wordle starting words",supporting:"wordle best start",title:"Best Wordle Starting Words",url:"/best-wordle-starting-words.html",words:1500},
+  {day:98,postNum:3,phase:"ScalingROI",keyword:"wordle strategy tips",supporting:"wordle tricks",title:"Wordle Strategy Tips (Win Every Day)",url:"/wordle-strategy-tips.html",words:1500},
+  {day:99,postNum:1,phase:"ScalingROI",keyword:"word length finder tool",supporting:"words by length tool",title:"Word Length Finder Tool",url:"/word-length-finder.html",words:1500},
+  {day:99,postNum:2,phase:"ScalingROI",keyword:"random word generator online",supporting:"random words tool",title:"Random Word Generator Online",url:"/random-word-generator.html",words:1500},
+  {day:99,postNum:3,phase:"ScalingROI",keyword:"word combination generator",supporting:"word combiner tool",title:"Word Combination Generator Tool",url:"/word-combination-generator.html",words:1500},
+  {day:100,postNum:1,phase:"ScalingROI",keyword:"english dictionary words list",supporting:"dictionary words",title:"English Dictionary Words List",url:"/english-dictionary-words.html",words:1500},
+  {day:100,postNum:2,phase:"ScalingROI",keyword:"complete word list a to z",supporting:"a to z words",title:"Complete Word List A to Z",url:"/complete-word-list-a-to-z.html",words:1500},
+  {day:100,postNum:3,phase:"ScalingROI",keyword:"all english words list",supporting:"full words list",title:"All English Words List (Complete Guide)",url:"/all-english-words-list.html",words:1500},
+
+  // ============================================================
+  // ✅ ADD NEW DAYS BELOW THIS LINE (Days 101, 102, 103...)
+  // Copy the template below and fill in your details:
+  //
+  // {day:101, postNum:1, phase:"ScalingROI", keyword:"your keyword here", supporting:"keyword2, keyword3", title:"Your Article Title", url:"/your-url.html", words:1500},
+  // {day:101, postNum:2, phase:"ScalingROI", keyword:"your keyword 2", supporting:"support keyword", title:"Your Article Title 2", url:"/your-url-2.html", words:1500},
+  // ============================================================
+];
+
+// ── PROMPT TEMPLATES ─────────────────────────────────────────
+function generatePrompt(post) {
+  const kw = post.keyword;
+  const kwUp = kw.toUpperCase();
+  const supporting = post.supporting;
+  const title = post.title;
+  const url = post.url;
+  const words = post.words;
+  const phase = post.phase;
+
+  // Detect type
+  const isLetterStart = /^5 letter words starting with [a-z]$/i.test(kw);
+  const isLetterEnd = /ending in|ending with/i.test(kw);
+  const isLetterContains = /with [a-z] and [a-z]/i.test(kw) || /with [a-z]$/i.test(kw);
+  const is5Letter = /5 letter word/i.test(kw);
+  const isWordleDaily = /wordle answer today|wordle hints today|wordle answer yesterday/i.test(kw);
+  const isWordle = /wordle/i.test(kw);
+  const isScrabble = /scrabble/i.test(kw);
+  const isTool = /tool|solver|generator|finder/i.test(kw);
+
+  // Extract letter for letter-start posts
+  let letter = '';
+  if (isLetterStart) {
+    const m = kw.match(/starting with ([a-z])/i);
+    if (m) letter = m[1].toUpperCase();
+  }
+
+  if (isLetterStart && letter) {
+    return generatePhase1LetterPrompt(letter, kw, supporting, title, url, words);
+  } else if (is5Letter) {
+    return generate5LetterVariantPrompt(kw, supporting, title, url, words);
+  } else if (isWordleDaily) {
+    return generateWordleDailyPrompt(kw, supporting, title, url, words);
+  } else if (isWordle) {
+    return generateWordlePrompt(kw, supporting, title, url, words);
+  } else if (isScrabble) {
+    return generateScrabblePrompt(kw, supporting, title, url, words);
+  } else if (isTool) {
+    return generateToolPrompt(kw, supporting, title, url, words);
+  } else {
+    return generateGeneralSEOPrompt(kw, supporting, title, url, words);
+  }
+}
+
+function generatePhase1LetterPrompt(letter, kw, supporting, title, url, words) {
+  return `You are an expert SEO content writer specialized in Wordle, Scrabble, and word-based search intent websites. Your task is to generate a HIGH-QUALITY, GOOGLE-OPTIMIZED article that is:
+- Data-first
+- Structured for featured snippets
+- Fully unique
+- Zero fluff
+- SEO-optimized and ready to publish on WordPress
+
+============================================================
+WEBSITE: ${WEBSITE}
+============================================================
+INPUT VARIABLES:
+LETTER = ${letter}
+PRIMARY KEYWORD: ${kw}
+SECONDARY KEYWORDS: ${supporting}
+============================================================
+CRITICAL SEO RULES:
+============================================================
+1. NO DUPLICATION RULE
+   - Do NOT repeat words already used in other letter pages
+   - Only include REAL English dictionary words
+   - If unsure about a word → DO NOT include it
+2. DATA-FIRST RULE
+   - Word list is the #1 priority
+   - Minimum 200 unique, verified real words
+   - Words must be relevant and non-obscure unless in Rare section
+3. ZERO FLUFF RULE
+   - No storytelling, no filler paragraphs
+   - Every sentence must add direct value
+   - Intro max 80–100 words
+4. USER INTENT RULE
+   - Users want FAST word lists (Wordle / Scrabble use)
+   - Main word list must appear above the fold / early in article
+
+============================================================
+ARTICLE STRUCTURE (STRICT — DO NOT DEVIATE):
+============================================================
+TARGET LENGTH: ${words}–${words+400} words total
+
+1. TITLE: ${title}
+
+2. INTRO (80–100 words MAX):
+   - Mention Wordle, Scrabble, and word puzzles
+   - State what the article provides
+   - Include primary keyword naturally in first 100 words
+   - NO filler, NO storytelling
+
+3. FEATURED SNIPPET SECTION:
+   <h2>What are 5 letter words starting with ${letter}?</h2>
+   - Answer in 40–60 words ONLY
+   - Direct definition/answer style
+   - Use a short bullet list of 5–8 example words
+   - Optimized to win Google featured snippet position
+
+4. MAIN WORD LIST SECTION:
+   <h2>5 Letter Words Starting With ${letter} (Full List)</h2>
+   a) Comma-separated alphabetical list (minimum 200 words)
+   b) Table format (first 50–80 words):
+      | Word | Short Meaning (3–8 words) | Scrabble Score |
+
+5. BEST WORDLE WORDS SECTION:
+   <h2>Best 5 Letter Words Starting With ${letter} for Wordle</h2>
+   - Highlight 10–15 vowel-heavy or strategically strong words
+   - Brief 1-line reason why each word is Wordle-effective
+   - Focus on common letters: E, A, R, I, O, T, N, S
+
+6. COMMON WORDS SECTION:
+   <h2>Common 5 Letter Words Starting With ${letter}</h2>
+   - Only frequently used everyday words
+   - Easy vocabulary, no obscure terms
+   - List of 15–25 words with short meanings
+
+7. RARE & HIGH-VALUE WORDS SECTION:
+   <h2>Rare & High-Value 5 Letter Words Starting With ${letter}</h2>
+   - 8–15 rare but valid dictionary words
+   - Include Scrabble point value where high
+   - Short meaning for each
+
+8. STRATEGY TIPS SECTION:
+   <h2>Wordle & Scrabble Strategy for ${letter} Words</h2>
+   - Letter positioning tips
+   - Best vowel combinations with ${letter}
+   - Common letter patterns (e.g., ${letter}A___, ${letter}__E_)
+   - Scrabble board placement tips
+   - Keep to 150–200 words max, no fluff
+
+9. FAQ SECTION:
+   <h2>Frequently Asked Questions</h2>
+   - Create 4–5 FAQs based on real search queries
+   - Answers: 40–80 words each
+   - Cover: Wordle strategy, Scrabble scoring, word count, common/rare words
+
+10. FAQ SCHEMA — JSON-LD (REQUIRED):
+    <script type="application/ld+json">
+    { "@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [...] }
+    <\/script>
+
+11. RELATED WORD LISTS (INTERNAL LINKS):
+    <h2>Related Word Lists</h2>
+    - Include 6–8 internal links to other letter pages (exclude ${letter})
+    - Format: [Anchor Text](/url.html)
+
+============================================================
+FINAL OUTPUT CHECKLIST — DELIVER ALL:
+============================================================
+✅ Full article (${words}–${words+400} words)
+✅ Meta Title (max 60 characters)
+✅ Meta Description (max 155 characters)
+✅ Final URL: ${url}
+✅ 15 SEO Tags (comma-separated), including: Wordle, Scrabble, word list, ${letter} words, 5 letter words, word puzzle, word finder, word game, dictionary, word solver
+✅ FAQ Schema JSON-LD block`;
+}
+
+function generate5LetterVariantPrompt(kw, supporting, title, url, words) {
+  return `You are an expert SEO content writer specialized in Wordle, Scrabble, and word-based search intent websites. Generate a HIGH-QUALITY, GOOGLE-OPTIMIZED article for the topic below.
+
+============================================================
+WEBSITE: ${WEBSITE}
+PRIMARY KEYWORD: ${kw}
+SECONDARY KEYWORDS: ${supporting}
+ARTICLE TITLE: ${title}
+TARGET URL: ${url}
+TARGET WORD COUNT: ${words}–${words+300} words
+============================================================
+
+CRITICAL RULES:
+- Data-first: word list is the #1 priority
+- Minimum 150 unique, verified real English words in main list
+- Zero fluff — every sentence adds value
+- Intro max 80 words
+- Include primary keyword in first 100 words naturally
+
+ARTICLE STRUCTURE:
+1. TITLE: ${title}
+
+2. INTRO (max 80 words) — mention Wordle, Scrabble, word puzzles; no filler
+
+3. FEATURED SNIPPET SECTION:
+   <h2>What are ${kw}?</h2>
+   Answer in 40–60 words + 5–8 bullet examples
+
+4. MAIN WORD LIST:
+   <h2>${title} (Full List)</h2>
+   - Alphabetical comma-separated list (min 150 words)
+   - Table: First 40–60 words with | Word | Meaning | Scrabble Score |
+
+5. BEST FOR WORDLE:
+   <h2>Best ${kw.replace(/5 letter/i,'5 Letter')} for Wordle</h2>
+   - 10–15 strategically strong choices with 1-line reason each
+
+6. STRATEGY TIPS (100–150 words):
+   <h2>Tips & Strategy</h2>
+   - Letter pattern tips, vowel combos, Scrabble placement tips
+
+7. FAQ (4 questions, 40–60 words each, based on real search intent)
+
+8. FAQ SCHEMA JSON-LD
+
+9. RELATED LINKS (6 internal links to similar pages on ${WEBSITE})
+
+============================================================
+DELIVER ALL:
+✅ Full article (${words}–${words+300} words)
+✅ Meta Title (max 60 chars)
+✅ Meta Description (max 155 chars)
+✅ URL: ${url}
+✅ 12 SEO Tags
+✅ FAQ Schema JSON-LD`;
+}
+
+function generateWordleDailyPrompt(kw, supporting, title, url, words) {
+  return `You are an expert SEO content writer specialized in Wordle and daily word puzzle content. Generate a HIGH-QUALITY, GOOGLE-OPTIMIZED article for the topic below.
+
+============================================================
+WEBSITE: ${WEBSITE}
+PRIMARY KEYWORD: ${kw}
+SECONDARY KEYWORDS: ${supporting}
+ARTICLE TITLE: ${title}
+TARGET URL: ${url}
+TARGET WORD COUNT: ${words}–${words+200} words
+============================================================
+
+CRITICAL RULES:
+- This is a TIME-SENSITIVE, HIGH-TRAFFIC article — be direct and fast
+- Users want the answer IMMEDIATELY — put it at the top
+- Zero fluff, zero filler
+- Write in a helpful, direct tone
+- Include today's date context naturally
+
+ARTICLE STRUCTURE:
+1. TITLE: ${title}
+
+2. INTRO (50 words MAX) — state what this page provides instantly
+
+3. TODAY'S ANSWER SECTION (TOP PRIORITY):
+   <h2>Wordle Answer Today</h2>
+   - Spoiler warning note
+   - [PLACEHOLDER: Update this daily with actual answer]
+   - Brief note about the word's meaning
+
+4. HINTS SECTION (no spoilers):
+   <h2>Wordle Hints Today (Before You Spoil It)</h2>
+   - 5 progressive hints (letter count → pattern → category → partial letters → final hint)
+
+5. HOW TO SOLVE TIPS:
+   <h2>How to Solve Today's Wordle</h2>
+   - Best starting words to use
+   - Letter elimination strategy
+   - Common patterns to look for
+
+6. WORDLE STRATEGY GUIDE (100–150 words):
+   <h2>Wordle Tips to Win Every Day</h2>
+   - Best starting words (CRANE, SLATE, ADIEU etc.)
+   - Yellow vs green tile strategy
+   - Hard mode tips
+
+7. FAQ (3–4 questions about Wordle answers, strategy, rules)
+
+8. FAQ SCHEMA JSON-LD
+
+9. RELATED LINKS (5–6 internal links on ${WEBSITE})
+
+============================================================
+DELIVER ALL:
+✅ Full article (${words}–${words+200} words)
+✅ Meta Title (max 60 chars) — include "Today" for freshness signal
+✅ Meta Description (max 155 chars)
+✅ URL: ${url}
+✅ 10 SEO Tags
+✅ FAQ Schema JSON-LD`;
+}
+
+function generateWordlePrompt(kw, supporting, title, url, words) {
+  return `You are an expert SEO content writer specialized in Wordle and 5-letter word content. Generate a HIGH-QUALITY, GOOGLE-OPTIMIZED article for the topic below.
+
+============================================================
+WEBSITE: ${WEBSITE}
+PRIMARY KEYWORD: ${kw}
+SECONDARY KEYWORDS: ${supporting}
+ARTICLE TITLE: ${title}
+TARGET URL: ${url}
+TARGET WORD COUNT: ${words}–${words+300} words
+============================================================
+
+CRITICAL RULES:
+- Word list is the #1 priority — users want lists, not essays
+- Minimum 100 verified 5-letter Wordle-valid words in main list
+- Zero fluff — every sentence is useful
+- Intro max 80 words
+- Use H2 headings for all sections
+
+ARTICLE STRUCTURE:
+1. TITLE: ${title}
+
+2. INTRO (max 80 words) — mention Wordle, fast word reference, what the article provides
+
+3. FEATURED SNIPPET:
+   <h2>What are ${kw}?</h2>
+   40–60 words + 5–8 bullet examples
+
+4. MAIN WORD LIST:
+   <h2>${title} (Complete List)</h2>
+   - Alphabetical comma-separated list (min 100 words)
+   - Table: First 40 words with | Word | Definition | Wordle Score |
+
+5. BEST PICKS FOR WORDLE:
+   <h2>Top ${kw.charAt(0).toUpperCase()+kw.slice(1)} for Winning Wordle</h2>
+   - 10 strongest choices + 1-line Wordle strategy note each
+
+6. STRATEGY & TIPS (100–150 words):
+   <h2>How to Use These Words in Wordle</h2>
+   - When to use these words, letter elimination tips, positioning strategy
+
+7. FAQ (4 questions, 40–60 words each)
+
+8. FAQ SCHEMA JSON-LD
+
+9. RELATED LINKS (6 internal links on ${WEBSITE})
+
+============================================================
+DELIVER ALL:
+✅ Full article (${words}–${words+300} words)
+✅ Meta Title (max 60 chars)
+✅ Meta Description (max 155 chars)
+✅ URL: ${url}
+✅ 12 SEO Tags
+✅ FAQ Schema JSON-LD`;
+}
+
+function generateScrabblePrompt(kw, supporting, title, url, words) {
+  return `You are an expert SEO content writer specialized in Scrabble and word game content. Generate a HIGH-QUALITY, GOOGLE-OPTIMIZED article for the topic below.
+
+============================================================
+WEBSITE: ${WEBSITE}
+PRIMARY KEYWORD: ${kw}
+SECONDARY KEYWORDS: ${supporting}
+ARTICLE TITLE: ${title}
+TARGET URL: ${url}
+TARGET WORD COUNT: ${words}–${words+300} words
+============================================================
+
+CRITICAL RULES:
+- Scrabble scores are MANDATORY for all word lists
+- All words must be valid in Official Scrabble Players Dictionary (OSPD/TWL)
+- Data-first: lists over essays
+- Zero fluff — every sentence adds value
+- Intro max 80 words
+
+ARTICLE STRUCTURE:
+1. TITLE: ${title}
+
+2. INTRO (max 80 words) — mention Scrabble, word puzzles, what the article delivers
+
+3. FEATURED SNIPPET:
+   <h2>What are ${kw}?</h2>
+   40–60 words + 5 highest-scoring examples
+
+4. MAIN WORD LIST:
+   <h2>${title} — Sorted by Scrabble Score</h2>
+   - Table (min 40 words): | Word | Scrabble Score | Meaning |
+   - Also include alphabetical full list (100+ words)
+
+5. HIGH-VALUE PICKS:
+   <h2>Highest Scoring ${kw.charAt(0).toUpperCase()+kw.slice(1)}</h2>
+   - Top 10–15 highest point words with score + 1-line meaning
+
+6. PLACEMENT STRATEGY:
+   <h2>Scrabble Board Strategy</h2>
+   - How to use these words on Triple Word Score / Triple Letter spots
+   - Best combinations and openings (100–150 words)
+
+7. FAQ (4 questions, 40–60 words each — real Scrabble queries)
+
+8. FAQ SCHEMA JSON-LD
+
+9. RELATED LINKS (6 internal links on ${WEBSITE})
+
+============================================================
+DELIVER ALL:
+✅ Full article (${words}–${words+300} words)
+✅ Meta Title (max 60 chars)
+✅ Meta Description (max 155 chars)
+✅ URL: ${url}
+✅ 12 SEO Tags including: Scrabble, word game, high score, word list
+✅ FAQ Schema JSON-LD`;
+}
+
+function generateToolPrompt(kw, supporting, title, url, words) {
+  return `You are an expert SEO content writer specializing in word game tools and online word resources. Generate a HIGH-QUALITY, GOOGLE-OPTIMIZED article for the topic below.
+
+============================================================
+WEBSITE: ${WEBSITE}
+PRIMARY KEYWORD: ${kw}
+SECONDARY KEYWORDS: ${supporting}
+ARTICLE TITLE: ${title}
+TARGET URL: ${url}
+TARGET WORD COUNT: ${words}–${words+300} words
+============================================================
+
+CRITICAL RULES:
+- This is a TOOL/UTILITY article — user intent is to DO something, not just read
+- Be practical and action-oriented
+- Include step-by-step instructions
+- Zero fluff — every sentence is actionable
+- Intro max 80 words
+
+ARTICLE STRUCTURE:
+1. TITLE: ${title}
+
+2. INTRO (max 80 words) — what the tool/resource does, who needs it, instant value statement
+
+3. FEATURED SNIPPET:
+   <h2>What is ${kw}?</h2>
+   40–60 words defining what it is and how to use it
+
+4. HOW TO USE SECTION:
+   <h2>How to Use ${title}</h2>
+   - Step-by-step instructions (numbered list)
+   - 4–6 clear steps users can follow immediately
+
+5. EXAMPLES / RESULTS SECTION:
+   <h2>Examples of ${kw.charAt(0).toUpperCase()+kw.slice(1)} Results</h2>
+   - Show sample outputs / example word lists / sample results
+   - Tables or lists where appropriate (min 30–50 examples)
+
+6. USE CASES:
+   <h2>When to Use This Tool</h2>
+   - Wordle solving, Scrabble strategy, crosswords, hangman, vocabulary building
+   - 4–5 specific scenarios (100–120 words)
+
+7. TIPS & TRICKS (80–120 words):
+   <h2>Pro Tips for Better Results</h2>
+
+8. FAQ (4 questions, 40–60 words each)
+
+9. FAQ SCHEMA JSON-LD
+
+10. RELATED LINKS (6 internal links on ${WEBSITE})
+
+============================================================
+DELIVER ALL:
+✅ Full article (${words}–${words+300} words)
+✅ Meta Title (max 60 chars)
+✅ Meta Description (max 155 chars)
+✅ URL: ${url}
+✅ 12 SEO Tags including: word tool, word finder, online tool, free tool
+✅ FAQ Schema JSON-LD`;
+}
+
+function generateGeneralSEOPrompt(kw, supporting, title, url, words) {
+  return `You are an expert SEO content writer specializing in word games, vocabulary, and word puzzle resources. Generate a HIGH-QUALITY, GOOGLE-OPTIMIZED article for the topic below.
+
+============================================================
+WEBSITE: ${WEBSITE}
+PRIMARY KEYWORD: ${kw}
+SECONDARY KEYWORDS: ${supporting}
+ARTICLE TITLE: ${title}
+TARGET URL: ${url}
+TARGET WORD COUNT: ${words}–${words+300} words
+============================================================
+
+CRITICAL RULES:
+- Data and lists first — users come for information, not stories
+- Include primary keyword naturally in first 100 words
+- Zero fluff — every paragraph must add direct value
+- Structured for featured snippets
+- Intro max 80 words
+
+ARTICLE STRUCTURE:
+1. TITLE: ${title}
+
+2. INTRO (max 80 words) — state what the page covers, include primary keyword, no filler
+
+3. FEATURED SNIPPET:
+   <h2>What is / What are ${kw}?</h2>
+   40–60 word direct answer + 5–8 bullet point examples
+
+4. MAIN CONTENT SECTION:
+   <h2>${title} — Complete Guide</h2>
+   - Comprehensive lists, tables, or explanations (main value delivery)
+   - Minimum 80–120 items or substantial content block
+   - Use tables where helpful: | Item | Description | Notes |
+
+5. PRACTICAL EXAMPLES:
+   <h2>Examples & Usage</h2>
+   - Real-world examples showing how to use this in word games
+   - Wordle / Scrabble application where relevant
+
+6. TIPS & STRATEGY (100–150 words):
+   <h2>Tips for Using ${kw.charAt(0).toUpperCase()+kw.slice(1)}</h2>
+   - Actionable, game-focused tips
+
+7. FAQ (4–5 questions, 40–60 words each — based on real search intent)
+
+8. FAQ SCHEMA JSON-LD
+
+9. RELATED LINKS (6 internal links on ${WEBSITE})
+
+============================================================
+DELIVER ALL:
+✅ Full article (${words}–${words+300} words)
+✅ Meta Title (max 60 chars)
+✅ Meta Description (max 155 chars)
+✅ URL: ${url}
+✅ 12 SEO Tags
+✅ FAQ Schema JSON-LD`;
+}
+
+// ── BUILD UI ──────────────────────────────────────────────────
+let activeFilter = 'all';
+let activeBtn = null;
+
+function phaseLabel(phase) {
+  if (phase === 'Authority') return 'Authority';
+  if (phase === 'Recency') return 'Recency';
+  if (phase === 'Scaling') return 'Scaling';
+  if (phase === 'ScalingROI') return 'Scaling+ROI';
+  return phase;
+}
+function phaseKey(phase) {
+  return phase === 'ScalingROI' ? 'ScalingROI' : phase;
+}
+
+function buildLeftPanel(filterPhaseVal, searchVal) {
+  const panel = document.getElementById('leftPanel');
+  panel.innerHTML = '';
+
+  // Group by day
+  const dayMap = {};
+  posts.forEach(p => {
+    if (!dayMap[p.day]) dayMap[p.day] = [];
+    dayMap[p.day].push(p);
+  });
+
+  let lastPhase = null;
+  let visibleDays = 0;
+
+  Object.keys(dayMap).sort((a,b) => Number(a)-Number(b)).forEach(day => {
+    const dayPosts = dayMap[day];
+    const phase = dayPosts[0].phase;
+
+    // Filter
+    const filteredPosts = dayPosts.filter(p => {
+      const phaseMatch = filterPhaseVal === 'all' || phaseKey(p.phase) === filterPhaseVal;
+      const searchMatch = !searchVal || p.keyword.toLowerCase().includes(searchVal.toLowerCase()) || p.title.toLowerCase().includes(searchVal.toLowerCase());
+      return phaseMatch && searchMatch;
+    });
+    if (filteredPosts.length === 0) return;
+    visibleDays++;
+
+    // Phase section label
+    if (phase !== lastPhase) {
+      const lbl = document.createElement('div');
+      lbl.className = 'phase-section-label';
+      const colors = {Authority:'var(--phase1)',Recency:'var(--phase2)',Scaling:'var(--phase3)',ScalingROI:'var(--phase4)'};
+      lbl.style.color = colors[phase] || 'var(--muted)';
+      lbl.textContent = {Authority:'⬤ PHASE 1 — AUTHORITY (Days 1–30)',Recency:'⬤ PHASE 2 — RECENCY (Days 31–60)',Scaling:'⬤ PHASE 3 — SCALING (Days 61–70)',ScalingROI:'⬤ PHASE 4 — ROI (Days 71–100)'}[phase] || phase;
+      panel.appendChild(lbl);
+      lastPhase = phase;
+    }
+
+    const group = document.createElement('div');
+    group.className = 'day-group';
+
+    const header = document.createElement('div');
+    header.className = 'day-header';
+    header.innerHTML = `
+      <span class="day-num">Day ${day}</span>
+      <span class="day-phase-badge badge-${phase}">${phaseLabel(phase)}</span>
+      <span style="font-size:10px;color:var(--muted);margin-left:auto">${filteredPosts.length} post${filteredPosts.length>1?'s':''}</span>
+    `;
+    group.appendChild(header);
+
+    const postsDiv = document.createElement('div');
+    postsDiv.className = 'day-posts';
+
+    filteredPosts.forEach(p => {
+      const btn = document.createElement('button');
+      btn.className = 'post-btn';
+      btn.id = `btn-${p.day}-${p.postNum}`;
+      const shortKw = p.keyword.length > 38 ? p.keyword.slice(0,38)+'…' : p.keyword;
+      btn.innerHTML = `<span class="post-num">P${p.postNum}</span><span>${shortKw}</span>`;
+      btn.onclick = () => selectPost(p, btn);
+      postsDiv.appendChild(btn);
+    });
+
+    group.appendChild(postsDiv);
+    panel.appendChild(group);
+  });
+
+  if (visibleDays === 0) {
+    panel.innerHTML = '<div style="padding:40px 20px;text-align:center;color:var(--muted);font-size:13px;">No posts match your search.</div>';
+  }
+}
+
+function selectPost(post, btn) {
+  // Deactivate previous
+  if (activeBtn) activeBtn.classList.remove('active');
+  btn.classList.add('active');
+  activeBtn = btn;
+
+  const prompt = generatePrompt(post);
+  const phaseColors = {Authority:'var(--phase1)',Recency:'var(--phase2)',Scaling:'var(--phase3)',ScalingROI:'var(--phase4)'};
+  const phaseColor = phaseColors[post.phase] || 'var(--accent)';
+
+  document.getElementById('rightPanel').innerHTML = `
+    <div class="prompt-card">
+      <div class="prompt-header">
+        <div class="prompt-meta">
+          <div class="prompt-day-tag">DAY ${post.day} · POST ${post.postNum} · ${phaseLabel(post.phase).toUpperCase()}</div>
+          <div class="prompt-title">${post.title}</div>
+          <div class="prompt-url">${post.url}</div>
+          <div class="meta-grid">
+            <div class="meta-chip"><strong>Keyword:</strong> ${post.keyword}</div>
+            <div class="meta-chip"><strong>Words:</strong> ~${post.words}</div>
+            <div class="meta-chip"><strong>Phase:</strong> <span style="color:${phaseColor}">${phaseLabel(post.phase)}</span></div>
+          </div>
+        </div>
+        <button class="copy-btn" id="copyBtn" onclick="copyPrompt()">
+          📋 Copy Prompt
+        </button>
+      </div>
+      <div class="prompt-body">
+        <textarea class="prompt-textarea" id="promptText" readonly>${prompt}</textarea>
+      </div>
+    </div>
+    <div class="tips-card">
+      <div class="tips-title">💡 How to Use This Prompt</div>
+      <ul class="tips-list">
+        <li>Click <strong>"Copy Prompt"</strong> above, then paste it into Claude AI, ChatGPT, or Gemini</li>
+        <li>The prompt is pre-filled with your keyword, title, URL, and target word count — no editing needed</li>
+        <li>After generating, copy the output and paste directly into WordPress</li>
+        <li>Supporting keywords: <em>${post.supporting}</em></li>
+      </ul>
+    </div>
+  `;
+  // Scroll right panel to top
+  document.getElementById('rightPanel').scrollTop = 0;
+}
+
+function copyPrompt() {
+  const ta = document.getElementById('promptText');
+  const btn = document.getElementById('copyBtn');
+  if (!ta) return;
+  navigator.clipboard.writeText(ta.value).then(() => {
+    btn.textContent = '✅ Copied!';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.innerHTML = '📋 Copy Prompt'; btn.classList.remove('copied'); }, 2000);
+  }).catch(() => {
+    ta.select();
+    document.execCommand('copy');
+    btn.textContent = '✅ Copied!';
+    setTimeout(() => { btn.innerHTML = '📋 Copy Prompt'; btn.classList.remove('copied'); }, 2000);
+  });
+}
+
+function filterPhase(phase, el) {
+  activeFilter = phase;
+  document.querySelectorAll('.phase-tag').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  buildLeftPanel(phase, document.querySelector('.search-input').value);
+}
+
+function searchDays(val) {
+  buildLeftPanel(activeFilter, val);
+}
+
+// Init
+buildLeftPanel('all', '');
+</script>
+</body>
+</html>
