@@ -1,0 +1,1889 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SEO Prompt Generator — LetterCracker.info</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Fira+Code:wght@400;500;600&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════
+   THEME VARIABLES
+═══════════════════════════════════════════ */
+
+/* MIDNIGHT ── Deep navy, electric accents */
+body.th-midnight {
+  --bg:        #080b12;
+  --bg2:       #0e1320;
+  --card:      #141928;
+  --border:    #1f2840;
+  --border2:   #2a3555;
+  --text:      #e8eeff;
+  --text2:     #8fa3cc;
+  --muted:     #4a5a80;
+  --accent:    #38bdf8;
+  --accent-b:  #0284c7;
+  --accent-bg: rgba(56,189,248,.12);
+  --glow:      rgba(56,189,248,.3);
+  --ph1:       #38bdf8;
+  --ph2:       #fb923c;
+  --ph3:       #a78bfa;
+  --ph4:       #f472b6;
+  --ph1-bg:    rgba(56,189,248,.12);
+  --ph2-bg:    rgba(251,146,60,.12);
+  --ph3-bg:    rgba(167,139,250,.12);
+  --ph4-bg:    rgba(244,114,182,.12);
+  --ok:        #4ade80;
+  --warn:      #fbbf24;
+  --shadow:    rgba(0,0,0,.5);
+}
+
+/* DUSK ── Deep violet twilight */
+body.th-dusk {
+  --bg:        #08050f;
+  --bg2:       #120d22;
+  --card:      #1a1335;
+  --border:    #2d2050;
+  --border2:   #3d2d6e;
+  --text:      #ede9fe;
+  --text2:     #a594e0;
+  --muted:     #5b4a8c;
+  --accent:    #c084fc;
+  --accent-b:  #9333ea;
+  --accent-bg: rgba(192,132,252,.12);
+  --glow:      rgba(192,132,252,.35);
+  --ph1:       #818cf8;
+  --ph2:       #fb7185;
+  --ph3:       #34d399;
+  --ph4:       #fbbf24;
+  --ph1-bg:    rgba(129,140,248,.14);
+  --ph2-bg:    rgba(251,113,133,.14);
+  --ph3-bg:    rgba(52,211,153,.14);
+  --ph4-bg:    rgba(251,191,36,.14);
+  --ok:        #34d399;
+  --warn:      #fbbf24;
+  --shadow:    rgba(0,0,0,.6);
+}
+
+/* FOREST ── Deep emerald dark */
+body.th-forest {
+  --bg:        #030d07;
+  --bg2:       #081508;
+  --card:      #0e1e10;
+  --border:    #162b18;
+  --border2:   #1f4024;
+  --text:      #d1fae5;
+  --text2:     #6ee7b7;
+  --muted:     #2d6a3f;
+  --accent:    #4ade80;
+  --accent-b:  #16a34a;
+  --accent-bg: rgba(74,222,128,.12);
+  --glow:      rgba(74,222,128,.3);
+  --ph1:       #4ade80;
+  --ph2:       #86efac;
+  --ph3:       #34d399;
+  --ph4:       #fde047;
+  --ph1-bg:    rgba(74,222,128,.12);
+  --ph2-bg:    rgba(134,239,172,.12);
+  --ph3-bg:    rgba(52,211,153,.12);
+  --ph4-bg:    rgba(253,224,71,.12);
+  --ok:        #86efac;
+  --warn:      #fde047;
+  --shadow:    rgba(0,0,0,.6);
+}
+
+/* DAWN ── Warm sunrise, light theme */
+body.th-dawn {
+  --bg:        #fff8f0;
+  --bg2:       #fff1e0;
+  --card:      #fde8cc;
+  --border:    #f5d3a8;
+  --border2:   #e8b878;
+  --text:      #1a0e05;
+  --text2:     #5c3d1a;
+  --muted:     #9c7040;
+  --accent:    #dc5a14;
+  --accent-b:  #b84510;
+  --accent-bg: rgba(220,90,20,.1);
+  --glow:      rgba(220,90,20,.25);
+  --ph1:       #1d6fb8;
+  --ph2:       #dc5a14;
+  --ph3:       #7c3aed;
+  --ph4:       #b91c1c;
+  --ph1-bg:    rgba(29,111,184,.12);
+  --ph2-bg:    rgba(220,90,20,.12);
+  --ph3-bg:    rgba(124,58,237,.12);
+  --ph4-bg:    rgba(185,28,28,.12);
+  --ok:        #15803d;
+  --warn:      #b45309;
+  --shadow:    rgba(100,50,0,.2);
+}
+
+/* PAPER ── Clean editorial, light */
+body.th-paper {
+  --bg:        #f9f7f4;
+  --bg2:       #f2ede6;
+  --card:      #e8e1d8;
+  --border:    #d4cab8;
+  --border2:   #b8ab95;
+  --text:      #120f0a;
+  --text2:     #4a3f30;
+  --muted:     #8c7a60;
+  --accent:    #1a56db;
+  --accent-b:  #1344b0;
+  --accent-bg: rgba(26,86,219,.1);
+  --glow:      rgba(26,86,219,.2);
+  --ph1:       #1a56db;
+  --ph2:       #c2410c;
+  --ph3:       #6d28d9;
+  --ph4:       #be123c;
+  --ph1-bg:    rgba(26,86,219,.1);
+  --ph2-bg:    rgba(194,65,12,.1);
+  --ph3-bg:    rgba(109,40,217,.1);
+  --ph4-bg:    rgba(190,18,60,.1);
+  --ok:        #166534;
+  --warn:      #92400e;
+  --shadow:    rgba(0,0,0,.12);
+}
+
+/* ═══════════════════════════════════════════
+   RESET & BASE
+═══════════════════════════════════════════ */
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+html { font-size:14px; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  min-height: 100vh;
+  transition: background .3s, color .3s;
+}
+
+/* ═══════════════════════════════════════════
+   HEADER
+═══════════════════════════════════════════ */
+header {
+  position: sticky; top: 0; z-index: 200;
+  background: var(--bg2);
+  border-bottom: 1px solid var(--border);
+  padding: 0 20px;
+  display: flex; align-items: center; gap: 16px;
+  height: 56px;
+  box-shadow: 0 2px 16px var(--shadow);
+}
+
+.logo {
+  display: flex; align-items: center; gap: 9px;
+  flex-shrink: 0;
+}
+.logo-mark {
+  width: 30px; height: 30px;
+  background: var(--accent);
+  border-radius: 7px;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Fira Code', monospace;
+  font-weight: 600; font-size: 11px;
+  color: var(--bg);
+  box-shadow: 0 0 12px var(--glow);
+}
+.logo-text {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800; font-size: 14px;
+  color: var(--text); letter-spacing: -.3px;
+}
+.logo-sub {
+  font-size: 10px; color: var(--muted);
+  letter-spacing: .3px;
+}
+
+/* STATS ROW in header */
+.hdr-stats {
+  display: flex; gap: 2px; align-items: center; margin-left: 4px;
+}
+.hstat {
+  display: flex; flex-direction: column; align-items: center;
+  padding: 4px 10px;
+  border-left: 1px solid var(--border);
+}
+.hstat:first-child { border-left: none; }
+.hstat-num {
+  font-family: 'Syne', sans-serif; font-weight: 800; font-size: 15px;
+  color: var(--accent); line-height: 1;
+  text-shadow: 0 0 10px var(--glow);
+}
+.hstat-lbl {
+  font-size: 9px; color: var(--muted); text-transform: uppercase;
+  letter-spacing: .5px; margin-top: 1px;
+}
+
+/* COUNTDOWN */
+.countdown-wrap {
+  display: flex; align-items: center; gap: 8px;
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 8px; padding: 5px 12px;
+  flex-shrink: 0;
+}
+.countdown-label {
+  font-size: 10px; color: var(--muted); text-transform: uppercase;
+  letter-spacing: .5px; white-space: nowrap;
+}
+.countdown-clock {
+  font-family: 'Fira Code', monospace; font-weight: 600; font-size: 14px;
+  color: var(--ph4);
+  letter-spacing: 2px;
+  text-shadow: 0 0 8px var(--ph4);
+}
+
+.hdr-right {
+  margin-left: auto; display: flex; align-items: center; gap: 8px;
+}
+
+/* THEME SWITCHER */
+.theme-sw { display: flex; gap: 4px; align-items: center; }
+.theme-btn {
+  width: 26px; height: 26px; border-radius: 6px;
+  border: 2px solid transparent; cursor: pointer;
+  font-size: 13px; display: flex; align-items: center; justify-content: center;
+  transition: all .15s; background: var(--card);
+  position: relative;
+}
+.theme-btn:hover { border-color: var(--accent); transform: scale(1.1); }
+.theme-btn.active { border-color: var(--accent); box-shadow: 0 0 8px var(--glow); }
+.theme-btn[title]::after {
+  content: attr(title);
+  position: absolute; bottom: -26px; left: 50%; transform: translateX(-50%);
+  background: var(--card); border: 1px solid var(--border);
+  color: var(--text); font-size: 10px; padding: 3px 7px;
+  border-radius: 4px; white-space: nowrap; pointer-events: none;
+  opacity: 0; transition: opacity .15s; z-index: 10;
+  font-family: 'DM Sans', sans-serif;
+}
+.theme-btn:hover::after { opacity: 1; }
+
+/* HEADER BUTTONS */
+.hdr-btn {
+  display: flex; align-items: center; gap: 5px;
+  background: var(--card); border: 1px solid var(--border);
+  color: var(--text2); padding: 5px 11px; border-radius: 7px;
+  font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 500;
+  cursor: pointer; transition: all .15s; white-space: nowrap;
+}
+.hdr-btn:hover { border-color: var(--accent); color: var(--text); }
+.hdr-btn.primary {
+  background: var(--accent); color: var(--bg);
+  border-color: var(--accent); font-weight: 600;
+}
+.hdr-btn.primary:hover { background: var(--accent-b); border-color: var(--accent-b); }
+
+/* ═══════════════════════════════════════════
+   SETTINGS DRAWER
+═══════════════════════════════════════════ */
+.drawer-overlay {
+  position: fixed; inset: 0; background: rgba(0,0,0,.6);
+  z-index: 300; opacity: 0; pointer-events: none;
+  transition: opacity .25s;
+}
+.drawer-overlay.open { opacity: 1; pointer-events: all; }
+.drawer {
+  position: fixed; top: 0; right: -440px; width: 440px;
+  height: 100vh; background: var(--bg2); border-left: 1px solid var(--border);
+  z-index: 301; overflow-y: auto; padding: 24px;
+  transition: right .28s cubic-bezier(.4,0,.2,1);
+  box-shadow: -8px 0 32px var(--shadow);
+}
+.drawer.open { right: 0; }
+.drawer h2 {
+  font-family: 'Syne', sans-serif; font-size: 18px; font-weight: 800;
+  margin-bottom: 4px; color: var(--text);
+}
+.drawer-sub { font-size: 12px; color: var(--muted); margin-bottom: 20px; line-height: 1.5; }
+.drawer-close {
+  position: absolute; top: 20px; right: 20px;
+  background: var(--card); border: 1px solid var(--border);
+  color: var(--text2); width: 28px; height: 28px; border-radius: 6px;
+  cursor: pointer; font-size: 16px; display: flex; align-items: center; justify-content: center;
+  transition: all .15s;
+}
+.drawer-close:hover { border-color: var(--accent); color: var(--text); }
+
+.drawer-section { margin-bottom: 24px; }
+.drawer-section-title {
+  font-family: 'Syne', sans-serif; font-size: 12px; font-weight: 700;
+  color: var(--accent); text-transform: uppercase; letter-spacing: .8px;
+  margin-bottom: 10px;
+}
+.drawer-label {
+  font-size: 12px; color: var(--text2); margin-bottom: 6px; font-weight: 500;
+}
+.drawer-input {
+  width: 100%; background: var(--card); border: 1px solid var(--border);
+  color: var(--text); padding: 9px 12px; border-radius: 8px;
+  font-family: 'Fira Code', monospace; font-size: 11px;
+  outline: none; transition: border .2s; margin-bottom: 8px;
+}
+.drawer-input:focus { border-color: var(--accent); }
+.drawer-input::placeholder { color: var(--muted); }
+.drawer-hint {
+  font-size: 11px; color: var(--muted); line-height: 1.6;
+  background: var(--card); border: 1px solid var(--border);
+  padding: 10px 12px; border-radius: 7px; margin-bottom: 10px;
+}
+.drawer-hint code {
+  font-family: 'Fira Code', monospace; font-size: 10px;
+  background: var(--bg); padding: 2px 5px; border-radius: 3px;
+  color: var(--accent);
+}
+.drawer-status {
+  font-size: 12px; padding: 8px 12px; border-radius: 7px;
+  margin-top: 8px; display: none; line-height: 1.4;
+}
+.drawer-status.ok  { background: rgba(74,222,128,.12); color: var(--ok); border: 1px solid var(--ok); display: block; }
+.drawer-status.err { background: rgba(244,114,182,.12); color: var(--ph4); border: 1px solid var(--ph4); display: block; }
+.drawer-status.loading { background: var(--accent-bg); color: var(--accent); border: 1px solid var(--accent); display: block; }
+
+.drawer-divider { border: none; border-top: 1px solid var(--border); margin: 20px 0; }
+
+.connect-btn {
+  width: 100%; background: var(--accent); color: var(--bg);
+  border: none; padding: 11px; border-radius: 9px;
+  font-family: 'Syne', sans-serif; font-size: 14px; font-weight: 700;
+  cursor: pointer; transition: all .15s; margin-bottom: 8px;
+}
+.connect-btn:hover { background: var(--accent-b); transform: translateY(-1px); }
+.connect-btn:disabled { opacity: .5; cursor: not-allowed; transform: none; }
+
+.secondary-btn {
+  width: 100%; background: var(--card); color: var(--text2);
+  border: 1px solid var(--border); padding: 9px; border-radius: 9px;
+  font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500;
+  cursor: pointer; transition: all .15s;
+}
+.secondary-btn:hover { border-color: var(--accent); color: var(--text); }
+
+/* Instruction steps */
+.step-list { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+.step-list li {
+  display: flex; gap: 10px; align-items: flex-start;
+  font-size: 12px; color: var(--text2); line-height: 1.5;
+}
+.step-num {
+  min-width: 20px; height: 20px; background: var(--accent-bg);
+  border: 1px solid var(--accent); border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 10px; font-weight: 700; color: var(--accent);
+  flex-shrink: 0; margin-top: 1px;
+}
+
+/* ═══════════════════════════════════════════
+   PROGRESS BAR
+═══════════════════════════════════════════ */
+.progress-bar-wrap {
+  height: 3px; background: var(--border);
+  position: relative; overflow: hidden;
+}
+.progress-bar-fill {
+  height: 100%; background: linear-gradient(90deg, var(--accent), var(--ph3));
+  transition: width .5s ease;
+  box-shadow: 0 0 6px var(--glow);
+}
+
+/* ═══════════════════════════════════════════
+   FILTER BAR
+═══════════════════════════════════════════ */
+.filter-bar {
+  background: var(--bg2); border-bottom: 1px solid var(--border);
+  padding: 8px 20px; display: flex; gap: 6px; align-items: center; flex-wrap: wrap;
+}
+.filter-lbl { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: .6px; font-weight: 600; margin-right: 2px; }
+.filter-chip {
+  font-size: 11px; font-weight: 500; padding: 4px 11px;
+  border-radius: 20px; border: 1px solid var(--border);
+  background: transparent; color: var(--text2);
+  cursor: pointer; transition: all .15s; font-family: 'DM Sans', sans-serif;
+}
+.filter-chip:hover { border-color: var(--accent); color: var(--accent); }
+.filter-chip.active { background: var(--accent-bg); border-color: var(--accent); color: var(--accent); font-weight: 600; }
+.filter-chip.ph1.active { background: var(--ph1-bg); border-color: var(--ph1); color: var(--ph1); }
+.filter-chip.ph2.active { background: var(--ph2-bg); border-color: var(--ph2); color: var(--ph2); }
+.filter-chip.ph3.active { background: var(--ph3-bg); border-color: var(--ph3); color: var(--ph3); }
+.filter-chip.ph4.active { background: var(--ph4-bg); border-color: var(--ph4); color: var(--ph4); }
+
+.search-box {
+  margin-left: auto; background: var(--card); border: 1px solid var(--border);
+  color: var(--text); padding: 5px 12px; border-radius: 7px;
+  font-family: 'DM Sans', sans-serif; font-size: 12px;
+  outline: none; width: 190px; transition: border .2s;
+}
+.search-box:focus { border-color: var(--accent); }
+.search-box::placeholder { color: var(--muted); }
+
+/* ═══════════════════════════════════════════
+   MAIN LAYOUT
+═══════════════════════════════════════════ */
+.layout {
+  display: flex; height: calc(100vh - 92px); overflow: hidden;
+}
+
+/* LEFT PANEL */
+.left-panel {
+  width: 320px; min-width: 280px;
+  overflow-y: auto; border-right: 1px solid var(--border);
+  background: var(--bg2);
+}
+.left-panel::-webkit-scrollbar { width: 3px; }
+.left-panel::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
+
+.phase-section-hdr {
+  padding: 7px 16px; font-size: 9px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: .8px;
+  background: var(--bg); color: var(--muted);
+  border-bottom: 1px solid var(--border);
+  position: sticky; top: 0; z-index: 5;
+  display: flex; align-items: center; gap: 6px;
+}
+.phase-section-hdr .dot { width: 6px; height: 6px; border-radius: 50%; }
+
+.day-group { border-bottom: 1px solid var(--border); }
+.day-hdr {
+  padding: 10px 16px 6px;
+  display: flex; align-items: center; gap: 8px;
+}
+.day-num-lbl {
+  font-family: 'Fira Code', monospace; font-size: 10px; font-weight: 600;
+  color: var(--muted); min-width: 42px;
+}
+.phase-badge {
+  font-size: 9px; font-weight: 700; padding: 2px 7px; border-radius: 10px;
+  text-transform: uppercase; letter-spacing: .4px;
+}
+.ph-Authority  { background: var(--ph1-bg); color: var(--ph1); }
+.ph-Recency    { background: var(--ph2-bg); color: var(--ph2); }
+.ph-Scaling    { background: var(--ph3-bg); color: var(--ph3); }
+.ph-ScalingROI { background: var(--ph4-bg); color: var(--ph4); }
+.ph-default    { background: var(--accent-bg); color: var(--accent); }
+
+.day-date-lbl {
+  margin-left: auto; font-size: 9px; color: var(--muted);
+  font-family: 'Fira Code', monospace;
+}
+.day-date-lbl.today { color: var(--ok); font-weight: 600; }
+.day-date-lbl.past  { color: var(--muted); opacity: .6; }
+
+.day-posts { padding: 0 10px 8px; display: flex; flex-direction: column; gap: 3px; }
+.post-btn {
+  display: flex; align-items: center; gap: 8px;
+  background: var(--card); border: 1px solid var(--border);
+  color: var(--text); padding: 7px 10px; border-radius: 7px;
+  cursor: pointer; text-align: left; width: 100%;
+  font-family: 'DM Sans', sans-serif; font-size: 11px; font-weight: 400;
+  transition: all .12s; line-height: 1.3; position: relative;
+}
+.post-btn:hover { border-color: var(--accent); background: var(--accent-bg); }
+.post-btn.active {
+  border-color: var(--accent); background: var(--accent-bg); color: var(--accent);
+  box-shadow: 0 0 0 1px var(--accent);
+}
+.post-btn.done { opacity: .55; }
+.post-num {
+  font-family: 'Fira Code', monospace; font-size: 9px; font-weight: 600;
+  color: var(--muted); min-width: 28px; background: var(--bg);
+  padding: 2px 4px; border-radius: 4px; text-align: center; flex-shrink: 0;
+}
+.post-btn.active .post-num { color: var(--accent); background: var(--accent-bg); }
+.post-tick {
+  margin-left: auto; flex-shrink: 0; font-size: 11px; color: var(--ok);
+}
+
+/* RIGHT PANEL */
+.right-panel {
+  flex: 1; overflow-y: auto; padding: 24px;
+  display: flex; flex-direction: column; gap: 16px;
+}
+.right-panel::-webkit-scrollbar { width: 3px; }
+.right-panel::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
+
+/* WELCOME */
+.welcome-screen {
+  flex: 1; display: flex; flex-direction: column;
+  align-items: center; justify-content: center; text-align: center; gap: 16px;
+}
+.welcome-icon { font-size: 52px; }
+.welcome-title { font-family: 'Syne', sans-serif; font-size: 24px; font-weight: 800; color: var(--text); }
+.welcome-sub { font-size: 14px; color: var(--muted); max-width: 380px; line-height: 1.6; }
+.welcome-steps { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; margin-top: 8px; }
+.w-step {
+  background: var(--card); border: 1px solid var(--border);
+  padding: 14px 18px; border-radius: 10px; text-align: left; width: 160px;
+}
+.w-step-n { font-family: 'Fira Code', monospace; font-size: 10px; color: var(--accent); font-weight: 600; margin-bottom: 5px; }
+.w-step-t { font-size: 12px; color: var(--text2); line-height: 1.4; }
+
+/* NO SHEET NOTICE */
+.no-sheet-notice {
+  background: var(--accent-bg); border: 1px solid var(--accent);
+  border-radius: 10px; padding: 14px 18px; margin-bottom: 4px;
+  font-size: 12px; color: var(--accent); line-height: 1.6;
+  display: flex; align-items: flex-start; gap: 10px;
+}
+.no-sheet-notice button {
+  background: var(--accent); color: var(--bg); border: none;
+  padding: 4px 10px; border-radius: 5px; font-size: 11px; font-weight: 600;
+  cursor: pointer; white-space: nowrap; margin-top: 2px; flex-shrink: 0;
+}
+
+/* PROMPT CARD */
+.prompt-card {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 14px; overflow: hidden;
+}
+.prompt-card-hdr {
+  padding: 18px 20px 14px; border-bottom: 1px solid var(--border);
+}
+.prompt-day-tag {
+  font-family: 'Fira Code', monospace; font-size: 10px;
+  color: var(--accent); font-weight: 600; margin-bottom: 5px;
+  letter-spacing: .5px; text-transform: uppercase;
+}
+.prompt-title {
+  font-family: 'Syne', sans-serif; font-size: 17px; font-weight: 800;
+  color: var(--text); line-height: 1.3; margin-bottom: 5px;
+}
+.prompt-url {
+  font-family: 'Fira Code', monospace; font-size: 11px;
+  color: var(--muted); margin-bottom: 10px;
+}
+.prompt-chips { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 12px; }
+.p-chip {
+  font-size: 10px; padding: 3px 9px; border-radius: 6px;
+  background: var(--bg); border: 1px solid var(--border); color: var(--text2);
+}
+.p-chip strong { color: var(--text); }
+.copy-btn-wrap { display: flex; gap: 8px; }
+.copy-btn {
+  background: var(--accent); color: var(--bg);
+  border: none; padding: 8px 18px; border-radius: 8px;
+  font-family: 'Syne', sans-serif; font-size: 13px; font-weight: 700;
+  cursor: pointer; transition: all .15s; display: flex; align-items: center; gap: 6px;
+}
+.copy-btn:hover { background: var(--accent-b); transform: translateY(-1px); }
+.copy-btn.copied { background: var(--ok); color: #fff; }
+.open-ai-btn {
+  background: var(--card); border: 1px solid var(--border);
+  color: var(--text2); padding: 8px 14px; border-radius: 8px;
+  font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 500;
+  cursor: pointer; transition: all .15s; text-decoration: none;
+  display: flex; align-items: center; gap: 5px;
+}
+.open-ai-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+.prompt-body { padding: 16px 20px; }
+.prompt-textarea {
+  width: 100%; min-height: 420px;
+  background: var(--bg); border: 1px solid var(--border);
+  color: var(--text); padding: 16px;
+  font-family: 'Fira Code', monospace; font-size: 12px; line-height: 1.8;
+  border-radius: 9px; resize: vertical; outline: none;
+  transition: border .2s;
+}
+.prompt-textarea:focus { border-color: var(--accent); }
+
+/* TIPS CARD */
+.tips-card {
+  background: var(--accent-bg); border: 1px solid var(--accent);
+  border-radius: 10px; padding: 14px 18px;
+  opacity: .9;
+}
+.tips-title { font-size: 12px; font-weight: 700; color: var(--accent); margin-bottom: 7px; }
+.tips-list { list-style: none; display: flex; flex-direction: column; gap: 5px; }
+.tips-list li {
+  font-size: 11px; color: var(--text2); padding-left: 14px;
+  position: relative; line-height: 1.5;
+}
+.tips-list li::before { content: '→'; position: absolute; left: 0; color: var(--accent); }
+
+/* LOADING SPINNER */
+.spinner {
+  width: 36px; height: 36px; border-radius: 50%;
+  border: 3px solid var(--border);
+  border-top-color: var(--accent);
+  animation: spin .7s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* EMPTY */
+.empty-msg {
+  padding: 40px 20px; text-align: center;
+  font-size: 13px; color: var(--muted);
+}
+
+/* SCROLLBAR global */
+::-webkit-scrollbar { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
+
+@media(max-width: 768px) {
+  .layout { flex-direction: column; height: auto; }
+  .left-panel { width: 100%; max-height: 260px; border-right: none; border-bottom: 1px solid var(--border); }
+  header { padding: 0 12px; gap: 10px; }
+  .hdr-stats { display: none; }
+  .drawer { width: 100%; right: -100%; }
+  .logo-sub { display: none; }
+}
+</style>
+</head>
+
+<!-- DEFAULT THEME: MIDNIGHT -->
+<body class="th-midnight">
+
+<!-- ═══════════ DRAWER OVERLAY ═══════════ -->
+<div class="drawer-overlay" id="drawerOverlay" onclick="closeDrawer()"></div>
+<div class="drawer" id="settingsDrawer">
+  <button class="drawer-close" onclick="closeDrawer()">✕</button>
+  <h2>⚙ Settings</h2>
+  <p class="drawer-sub">Connect your Google Sheet for live data sync. Update any time your plan changes.</p>
+
+  <div class="drawer-section">
+    <div class="drawer-section-title">🔗 Google Sheet URL</div>
+    <div class="drawer-hint">
+      <strong>How to connect (3 steps):</strong><br>
+      <ol class="step-list" style="margin-top:8px">
+        <li><span class="step-num">1</span>Open Google Sheet → <code>File → Share → Publish to web</code> → pick your sheet tab → choose <code>CSV</code> → click <strong>Publish</strong> → confirm</li>
+        <li><span class="step-num">2</span>Also do: <code>File → Share → Share with others</code> → <code>Anyone with the link can view</code></li>
+        <li><span class="step-num">3</span>Copy the URL from your browser address bar, paste below, then click Connect</li>
+      </ol>
+      <div style="margin-top:8px;padding:8px 10px;background:rgba(251,191,36,.1);border:1px solid rgba(251,191,36,.3);border-radius:6px;font-size:11px;color:var(--warn)">
+        ⚠️ <strong>Publish to web</strong> is required — just sharing the link is not enough. Both steps above are needed.
+      </div>
+    </div>
+    <div class="drawer-label">Paste Google Sheet URL:</div>
+    <input class="drawer-input" id="sheetUrlInput" placeholder="https://docs.google.com/spreadsheets/d/..." />
+    <div class="drawer-label" style="margin-top:10px">Sheet tab name (Page 1 tab name exactly):</div>
+    <input class="drawer-input" id="sheetNameInput" placeholder="revised ChatGPT-90-DAY SEO PLAN" value="revised ChatGPT-90-DAY SEO PLAN" />
+    <button class="connect-btn" id="connectBtn" onclick="connectSheet()">🔄 Connect &amp; Fetch Data</button>
+    <button class="secondary-btn" onclick="clearSheet()">✕ Disconnect Sheet (use built-in data)</button>
+    <div class="drawer-status" id="drawerStatus"></div>
+  </div>
+
+  <hr class="drawer-divider">
+
+  <div class="drawer-section">
+    <div class="drawer-section-title">📅 Challenge Dates</div>
+    <div class="drawer-label">Override Start Date (if not in sheet):</div>
+    <input class="drawer-input" id="startDateInput" type="date" />
+    <div class="drawer-hint">
+      If your sheet has a <code>Date</code> column, the start/end dates are auto-detected. Use this only as a manual override.
+    </div>
+    <button class="secondary-btn" onclick="saveSettings()">💾 Save Settings</button>
+  </div>
+
+  <hr class="drawer-divider">
+
+  <div class="drawer-section">
+    <div class="drawer-section-title">ℹ️ Column Structure Expected (Page 1)</div>
+    <div class="drawer-hint" style="font-family:'Fira Code',monospace;font-size:10px;line-height:2">
+      Col A: Part &nbsp;&nbsp; Col B: Day &nbsp;&nbsp; Col C: Post # &nbsp;&nbsp; Col D: Phase<br>
+      Col E: Target Keyword &nbsp;&nbsp; Col F: Supporting Keywords<br>
+      Col G: Wrote &nbsp;&nbsp; Col H: Total Word &nbsp;&nbsp; Col I: Qty<br>
+      Col J: Article Title &nbsp;&nbsp; Col K: Suggested URL<br>
+      Col L: Date &nbsp;&nbsp; Col M: Publish Time &nbsp;&nbsp; Col N: SEO Action<br>
+      Col O: Total Posted (used for post count stats)
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ HEADER ═══════════ -->
+<header>
+  <div class="logo">
+    <div class="logo-mark">LC</div>
+    <div>
+      <div class="logo-text">SEO Prompt Generator</div>
+      <div class="logo-sub">LetterCracker.info</div>
+    </div>
+  </div>
+
+  <div class="hdr-stats">
+    <div class="hstat"><div class="hstat-num" id="statDays">—</div><div class="hstat-lbl">Days Left</div></div>
+    <div class="hstat"><div class="hstat-num" id="statPosts">—</div><div class="hstat-lbl">Posts Left</div></div>
+    <div class="hstat"><div class="hstat-num" id="statPhases">—</div><div class="hstat-lbl">Phases</div></div>
+    <div class="hstat"><div class="hstat-num" id="statTotal">—</div><div class="hstat-lbl">Total Posts</div></div>
+  </div>
+
+  <div class="countdown-wrap">
+    <span class="countdown-label">⏱ Ends in</span>
+    <span class="countdown-clock" id="countdownClock">--:--:--</span>
+  </div>
+
+  <div class="hdr-right">
+    <!-- THEME SWITCHER -->
+    <div class="theme-sw">
+      <button class="theme-btn active" title="Midnight" onclick="setTheme('midnight',this)">🌑</button>
+      <button class="theme-btn" title="Dusk"     onclick="setTheme('dusk',this)">🌆</button>
+      <button class="theme-btn" title="Forest"   onclick="setTheme('forest',this)">🌿</button>
+      <button class="theme-btn" title="Dawn"     onclick="setTheme('dawn',this)">🌅</button>
+      <button class="theme-btn" title="Paper"    onclick="setTheme('paper',this)">📄</button>
+    </div>
+    <button class="hdr-btn" onclick="goHome()" id="homeBtn">🔄 Reset</button>
+    <button class="hdr-btn" onclick="openDrawer()">⚙ Settings</button>
+    <button class="hdr-btn primary" onclick="updateData()" id="updateBtn">↻ Update</button>
+  </div>
+</header>
+
+<!-- PROGRESS BAR -->
+<div class="progress-bar-wrap">
+  <div class="progress-bar-fill" id="progressFill" style="width:0%"></div>
+</div>
+
+<!-- ═══════════ FILTER BAR ═══════════ -->
+<div class="filter-bar">
+  <span class="filter-lbl">Filter:</span>
+  <button class="filter-chip active" onclick="setFilter('all',this)">All</button>
+  <button class="filter-chip ph1" onclick="setFilter('Authority',this)">P1 · Authority</button>
+  <button class="filter-chip ph2" onclick="setFilter('Recency',this)">P2 · Recency</button>
+  <button class="filter-chip ph3" onclick="setFilter('Scaling',this)">P3 · Scaling</button>
+  <button class="filter-chip ph4" onclick="setFilter('ScalingROI',this)">P4 · ROI</button>
+  <input class="search-box" type="text" placeholder="🔍 Search keyword or title..." oninput="setSearch(this.value)">
+</div>
+
+<!-- ═══════════ MAIN LAYOUT ═══════════ -->
+<div class="layout">
+  <div class="left-panel" id="leftPanel"></div>
+  <div class="right-panel" id="rightPanel">
+    <div class="welcome-screen">
+      <div class="welcome-icon">⚡</div>
+      <div class="welcome-title">Ready to Generate</div>
+      <div class="welcome-sub">Pick any Day &amp; Post from the left panel. Your fully-formatted SEO prompt appears here — one click to copy.</div>
+      <div class="welcome-steps">
+        <div class="w-step"><div class="w-step-n">STEP 1</div><div class="w-step-t">Click any Post button on the left</div></div>
+        <div class="w-step"><div class="w-step-n">STEP 2</div><div class="w-step-t">Prompt auto-generates with all your data</div></div>
+        <div class="w-step"><div class="w-step-n">STEP 3</div><div class="w-step-t">Copy &amp; paste into Claude / ChatGPT / Gemini</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ╔══════════════════════════════════════════════════╗
+// ║  SAFE CLOSING TAG (prevents HTML parser conflict) ║
+// ╚══════════════════════════════════════════════════╝
+const SC = '<' + '/script>';
+
+// ╔══════════════════════════════════════════════════╗
+// ║  STATE                                            ║
+// ╚══════════════════════════════════════════════════╝
+let allPosts   = [];    // [{day,postNum,phase,keyword,supporting,words,title,url,date,wrote}]
+let activeFilter = 'all';
+let searchVal    = '';
+let activeBtn    = null;
+let endDate      = null;
+let countdownInterval = null;
+const WEBSITE = 'LetterCracker.info';
+
+// ╔══════════════════════════════════════════════════╗
+// ║  BUILT-IN FALLBACK DATA (Days 1-100)             ║
+// ╚══════════════════════════════════════════════════╝
+const BUILTIN = [
+  // Phase 1: Authority (Days 1-30)
+  {day:1,postNum:1,phase:'Authority',keyword:'5 letter words starting with a',supporting:'words start with a, a letter words',words:1800,title:'5 Letter Words Starting With A (Complete List)',url:'/5-letter-words-starting-with-a.html',date:''},
+  {day:1,postNum:2,phase:'Authority',keyword:'5 letter words starting with a ending in e',supporting:'a _ _ _ e words',words:1500,title:'5 Letter Words Starting With A Ending in E',url:'/5-letter-words-starting-with-a-ending-in-e.html',date:''},
+  {day:2,postNum:1,phase:'Authority',keyword:'5 letter words starting with b',supporting:'words start with b',words:1800,title:'5 Letter Words Starting With B',url:'/5-letter-words-starting-with-b.html',date:''},
+  {day:2,postNum:2,phase:'Authority',keyword:'5 letter words with a and b',supporting:'contains a b',words:1500,title:'5 Letter Words With A and B',url:'/5-letter-words-with-a-and-b.html',date:''},
+  {day:3,postNum:1,phase:'Authority',keyword:'5 letter words starting with c',supporting:'words start with c',words:1800,title:'5 Letter Words Starting With C',url:'/5-letter-words-starting-with-c.html',date:''},
+  {day:3,postNum:2,phase:'Authority',keyword:'5 letter words ending in at',supporting:'words ending at',words:1500,title:'5 Letter Words Ending in AT',url:'/5-letter-words-ending-in-at.html',date:''},
+  {day:4,postNum:1,phase:'Authority',keyword:'5 letter words starting with d',supporting:'d words list',words:1800,title:'5 Letter Words Starting With D',url:'/5-letter-words-starting-with-d.html',date:''},
+  {day:4,postNum:2,phase:'Authority',keyword:'5 letter words with t and e',supporting:'t e words',words:1500,title:'5 Letter Words With T and E',url:'/5-letter-words-with-t-and-e.html',date:''},
+  {day:5,postNum:1,phase:'Authority',keyword:'5 letter words starting with e',supporting:'e words list',words:1800,title:'5 Letter Words Starting With E',url:'/5-letter-words-starting-with-e.html',date:''},
+  {day:5,postNum:2,phase:'Authority',keyword:'5 letter words ending in ing',supporting:'ing words',words:1500,title:'5 Letter Words Ending in ING',url:'/5-letter-words-ending-in-ing.html',date:''},
+  {day:6,postNum:1,phase:'Authority',keyword:'5 letter words starting with f',supporting:'f words list',words:1800,title:'5 Letter Words Starting With F',url:'/5-letter-words-starting-with-f.html',date:''},
+  {day:6,postNum:2,phase:'Authority',keyword:'5 letter words ending in er',supporting:'er words',words:1500,title:'5 Letter Words Ending in ER',url:'/5-letter-words-ending-in-er.html',date:''},
+  {day:7,postNum:1,phase:'Authority',keyword:'5 letter words starting with g',supporting:'g words list',words:1800,title:'5 Letter Words Starting With G',url:'/5-letter-words-starting-with-g.html',date:''},
+  {day:7,postNum:2,phase:'Authority',keyword:'5 letter words with s and t',supporting:'s t words',words:1500,title:'5 Letter Words With S and T',url:'/5-letter-words-with-s-and-t.html',date:''},
+  {day:8,postNum:1,phase:'Authority',keyword:'5 letter words starting with h',supporting:'h words list',words:1800,title:'5 Letter Words Starting With H',url:'/5-letter-words-starting-with-h.html',date:''},
+  {day:8,postNum:2,phase:'Authority',keyword:'5 letter words ending in ly',supporting:'ly words',words:1500,title:'5 Letter Words Ending in LY',url:'/5-letter-words-ending-in-ly.html',date:''},
+  {day:9,postNum:1,phase:'Authority',keyword:'5 letter words starting with i',supporting:'i words list',words:1800,title:'5 Letter Words Starting With I',url:'/5-letter-words-starting-with-i.html',date:''},
+  {day:9,postNum:2,phase:'Authority',keyword:'5 letter words with a and t',supporting:'a t words',words:1500,title:'5 Letter Words With A and T',url:'/5-letter-words-with-a-and-t.html',date:''},
+  {day:10,postNum:1,phase:'Authority',keyword:'5 letter words starting with j',supporting:'j words list',words:1800,title:'5 Letter Words Starting With J',url:'/5-letter-words-starting-with-j.html',date:''},
+  {day:10,postNum:2,phase:'Authority',keyword:'5 letter words ending in ed',supporting:'ed words',words:1500,title:'5 Letter Words Ending in ED',url:'/5-letter-words-ending-in-ed.html',date:''},
+  {day:11,postNum:1,phase:'Authority',keyword:'5 letter words starting with k',supporting:'k words list',words:1800,title:'5 Letter Words Starting With K',url:'/5-letter-words-starting-with-k.html',date:''},
+  {day:11,postNum:2,phase:'Authority',keyword:'5 letter words ending in al',supporting:'al ending words',words:1500,title:'5 Letter Words Ending in AL',url:'/5-letter-words-ending-in-al.html',date:''},
+  {day:12,postNum:1,phase:'Authority',keyword:'5 letter words starting with l',supporting:'l words list',words:1800,title:'5 Letter Words Starting With L',url:'/5-letter-words-starting-with-l.html',date:''},
+  {day:12,postNum:2,phase:'Authority',keyword:'5 letter words with r and e',supporting:'r e words',words:1500,title:'5 Letter Words With R and E',url:'/5-letter-words-with-r-and-e.html',date:''},
+  {day:13,postNum:1,phase:'Authority',keyword:'5 letter words starting with m',supporting:'m words list',words:1800,title:'5 Letter Words Starting With M',url:'/5-letter-words-starting-with-m.html',date:''},
+  {day:13,postNum:2,phase:'Authority',keyword:'5 letter words ending in ar',supporting:'ar ending words',words:1500,title:'5 Letter Words Ending in AR',url:'/5-letter-words-ending-in-ar.html',date:''},
+  {day:14,postNum:1,phase:'Authority',keyword:'5 letter words starting with n',supporting:'n words list',words:1800,title:'5 Letter Words Starting With N',url:'/5-letter-words-starting-with-n.html',date:''},
+  {day:14,postNum:2,phase:'Authority',keyword:'5 letter words with a and r',supporting:'a r words',words:1500,title:'5 Letter Words With A and R',url:'/5-letter-words-with-a-and-r.html',date:''},
+  {day:15,postNum:1,phase:'Authority',keyword:'5 letter words starting with o',supporting:'o words list',words:1800,title:'5 Letter Words Starting With O',url:'/5-letter-words-starting-with-o.html',date:''},
+  {day:15,postNum:2,phase:'Authority',keyword:'5 letter words ending in on',supporting:'on ending words',words:1500,title:'5 Letter Words Ending in ON',url:'/5-letter-words-ending-in-on.html',date:''},
+  {day:16,postNum:1,phase:'Authority',keyword:'5 letter words starting with p',supporting:'p words list',words:1800,title:'5 Letter Words Starting With P',url:'/5-letter-words-starting-with-p.html',date:''},
+  {day:16,postNum:2,phase:'Authority',keyword:'5 letter words with s and a',supporting:'s a words',words:1500,title:'5 Letter Words With S and A',url:'/5-letter-words-with-s-and-a.html',date:''},
+  {day:17,postNum:1,phase:'Authority',keyword:'5 letter words starting with q',supporting:'q words list',words:1800,title:'5 Letter Words Starting With Q',url:'/5-letter-words-starting-with-q.html',date:''},
+  {day:17,postNum:2,phase:'Authority',keyword:'5 letter words ending in en',supporting:'en ending words',words:1500,title:'5 Letter Words Ending in EN',url:'/5-letter-words-ending-in-en.html',date:''},
+  {day:18,postNum:1,phase:'Authority',keyword:'5 letter words starting with r',supporting:'r words list',words:1800,title:'5 Letter Words Starting With R',url:'/5-letter-words-starting-with-r.html',date:''},
+  {day:18,postNum:2,phase:'Authority',keyword:'5 letter words with e and t',supporting:'e t words',words:1500,title:'5 Letter Words With E and T',url:'/5-letter-words-with-e-and-t.html',date:''},
+  {day:19,postNum:1,phase:'Authority',keyword:'5 letter words starting with s',supporting:'s words list',words:1800,title:'5 Letter Words Starting With S',url:'/5-letter-words-starting-with-s.html',date:''},
+  {day:19,postNum:2,phase:'Authority',keyword:'5 letter words ending in st',supporting:'st ending words',words:1500,title:'5 Letter Words Ending in ST',url:'/5-letter-words-ending-in-st.html',date:''},
+  {day:20,postNum:1,phase:'Authority',keyword:'5 letter words starting with t',supporting:'t words list',words:1800,title:'5 Letter Words Starting With T',url:'/5-letter-words-starting-with-t.html',date:''},
+  {day:20,postNum:2,phase:'Authority',keyword:'5 letter words with a and e',supporting:'a e words',words:1500,title:'5 Letter Words With A and E',url:'/5-letter-words-with-a-and-e.html',date:''},
+  {day:21,postNum:1,phase:'Authority',keyword:'5 letter words starting with u',supporting:'u words list',words:1800,title:'5 Letter Words Starting With U',url:'/5-letter-words-starting-with-u.html',date:''},
+  {day:21,postNum:2,phase:'Authority',keyword:'5 letter words ending in us',supporting:'us ending words',words:1500,title:'5 Letter Words Ending in US',url:'/5-letter-words-ending-in-us.html',date:''},
+  {day:22,postNum:1,phase:'Authority',keyword:'5 letter words starting with v',supporting:'v words list',words:1800,title:'5 Letter Words Starting With V',url:'/5-letter-words-starting-with-v.html',date:''},
+  {day:22,postNum:2,phase:'Authority',keyword:'5 letter words with o and r',supporting:'o r words',words:1500,title:'5 Letter Words With O and R',url:'/5-letter-words-with-o-and-r.html',date:''},
+  {day:23,postNum:1,phase:'Authority',keyword:'5 letter words starting with w',supporting:'w words list',words:1800,title:'5 Letter Words Starting With W',url:'/5-letter-words-starting-with-w.html',date:''},
+  {day:23,postNum:2,phase:'Authority',keyword:'5 letter words ending in ow',supporting:'ow ending words',words:1500,title:'5 Letter Words Ending in OW',url:'/5-letter-words-ending-in-ow.html',date:''},
+  {day:24,postNum:1,phase:'Authority',keyword:'5 letter words starting with x',supporting:'x words list',words:1800,title:'5 Letter Words Starting With X',url:'/5-letter-words-starting-with-x.html',date:''},
+  {day:24,postNum:2,phase:'Authority',keyword:'5 letter words with i and n',supporting:'i n words',words:1500,title:'5 Letter Words With I and N',url:'/5-letter-words-with-i-and-n.html',date:''},
+  {day:25,postNum:1,phase:'Authority',keyword:'5 letter words starting with y',supporting:'y words list',words:1800,title:'5 Letter Words Starting With Y',url:'/5-letter-words-starting-with-y.html',date:''},
+  {day:25,postNum:2,phase:'Authority',keyword:'5 letter words ending in ay',supporting:'ay ending words',words:1500,title:'5 Letter Words Ending in AY',url:'/5-letter-words-ending-in-ay.html',date:''},
+  {day:26,postNum:1,phase:'Authority',keyword:'5 letter words starting with z',supporting:'z words list',words:1800,title:'5 Letter Words Starting With Z',url:'/5-letter-words-starting-with-z.html',date:''},
+  {day:26,postNum:2,phase:'Authority',keyword:'5 letter words with u and t',supporting:'u t words',words:1500,title:'5 Letter Words With U and T',url:'/5-letter-words-with-u-and-t.html',date:''},
+  {day:27,postNum:1,phase:'Authority',keyword:'5 letter words starting with a ending in t',supporting:'a _ _ _ t words',words:1500,title:'5 Letter Words Starting With A and Ending in T',url:'/5-letter-words-starting-with-a-ending-in-t.html',date:''},
+  {day:27,postNum:2,phase:'Authority',keyword:'5 letter words with r and t',supporting:'r t words',words:1500,title:'5 Letter Words With R and T',url:'/5-letter-words-with-r-and-t.html',date:''},
+  {day:28,postNum:1,phase:'Authority',keyword:'5 letter words starting with s ending in e',supporting:'s _ _ _ e words',words:1500,title:'5 Letter Words Starting With S Ending in E',url:'/5-letter-words-starting-with-s-ending-in-e.html',date:''},
+  {day:28,postNum:2,phase:'Authority',keyword:'5 letter words ending in le',supporting:'le ending words',words:1500,title:'5 Letter Words Ending in LE',url:'/5-letter-words-ending-in-le.html',date:''},
+  {day:29,postNum:1,phase:'Authority',keyword:'5 letter words with a e i',supporting:'vowel words list',words:1500,title:'5 Letter Words With A E I',url:'/5-letter-words-with-a-e-i.html',date:''},
+  {day:29,postNum:2,phase:'Authority',keyword:'5 letter words ending in ch',supporting:'ch ending words',words:1500,title:'5 Letter Words Ending in CH',url:'/5-letter-words-ending-in-ch.html',date:''},
+  {day:30,postNum:1,phase:'Authority',keyword:'5 letter words with no vowels',supporting:'no vowel words',words:1500,title:'5 Letter Words With No Vowels',url:'/5-letter-words-with-no-vowels.html',date:''},
+  {day:30,postNum:2,phase:'Authority',keyword:'5 letter words with double letters',supporting:'double letter words',words:1500,title:'5 Letter Words With Double Letters',url:'/5-letter-words-with-double-letters.html',date:''},
+  // Phase 2: Recency (Days 31-60)
+  {day:31,postNum:1,phase:'Recency',keyword:'wordle answer today',supporting:'today wordle answer, wordle solution today',words:1200,title:'Wordle Answer Today (Updated Daily Solution)',url:'/wordle-answer-today.html',date:''},
+  {day:31,postNum:2,phase:'Recency',keyword:'5 letter words for wordle',supporting:'wordle words list, best wordle words',words:1500,title:'5 Letter Words for Wordle (Best Picks)',url:'/5-letter-words-for-wordle.html',date:''},
+  {day:31,postNum:3,phase:'Recency',keyword:'wordle hints today',supporting:'wordle clues today, hints wordle',words:1200,title:'Wordle Hints Today (Daily Clues & Tips)',url:'/wordle-hints-today.html',date:''},
+  {day:32,postNum:1,phase:'Recency',keyword:'wordle answer yesterday',supporting:'previous wordle answer',words:1000,title:"Yesterday's Wordle Answer (Archive)",url:'/wordle-answer-yesterday.html',date:''},
+  {day:32,postNum:2,phase:'Recency',keyword:'best starting words for wordle',supporting:'wordle best first words',words:1500,title:'Best Starting Words for Wordle',url:'/best-wordle-starting-words.html',date:''},
+  {day:32,postNum:3,phase:'Recency',keyword:'wordle 5 letter words with a',supporting:'wordle words with a',words:1500,title:'Wordle 5 Letter Words With A',url:'/wordle-5-letter-words-with-a.html',date:''},
+  {day:42,postNum:1,phase:'Recency',keyword:'wordle words ending in t',supporting:'ending t wordle words',words:1500,title:'Wordle Words Ending in T',url:'/wordle-words-ending-in-t.html',date:''},
+  {day:42,postNum:2,phase:'Recency',keyword:'wordle words starting with r',supporting:'wordle r start words',words:1500,title:'Wordle Words Starting With R',url:'/wordle-words-starting-with-r.html',date:''},
+  {day:42,postNum:3,phase:'Recency',keyword:'wordle words with o and e',supporting:'wordle o e words',words:1500,title:'Wordle Words With O and E',url:'/wordle-words-with-o-and-e.html',date:''},
+  {day:60,postNum:1,phase:'Recency',keyword:'wordle rare words list',supporting:'uncommon wordle words',words:1500,title:'Rare Wordle Words List',url:'/rare-wordle-words.html',date:''},
+  {day:60,postNum:2,phase:'Recency',keyword:'wordle strategy tips',supporting:'how to win wordle',words:1200,title:'Wordle Tips and Tricks to Win Daily',url:'/wordle-tips-and-tricks.html',date:''},
+  {day:60,postNum:3,phase:'Recency',keyword:'wordle words no vowels',supporting:'no vowel wordle',words:1500,title:'Wordle Words With No Vowels',url:'/wordle-words-no-vowels.html',date:''},
+  // Phase 3: Scaling (Days 61-70)
+  {day:61,postNum:1,phase:'Scaling',keyword:'5 letter words with a and e',supporting:'a e words list',words:1500,title:'5 Letter Words With A and E',url:'/5-letter-words-with-a-and-e.html',date:''},
+  {day:61,postNum:2,phase:'Scaling',keyword:'5 letter words with s and t',supporting:'s t words list',words:1500,title:'5 Letter Words With S and T',url:'/5-letter-words-with-s-and-t.html',date:''},
+  {day:61,postNum:3,phase:'Scaling',keyword:'5 letter words ending in er',supporting:'er ending words',words:1500,title:'5 Letter Words Ending in ER',url:'/5-letter-words-ending-in-er.html',date:''},
+  {day:65,postNum:1,phase:'Scaling',keyword:'5 letter words ending in ow',supporting:'ow ending words',words:1500,title:'5 Letter Words Ending in OW',url:'/5-letter-words-ending-in-ow.html',date:''},
+  {day:65,postNum:2,phase:'Scaling',keyword:'5 letter words with i and n',supporting:'i n words',words:1500,title:'5 Letter Words With I and N',url:'/5-letter-words-with-i-and-n.html',date:''},
+  {day:65,postNum:3,phase:'Scaling',keyword:'5 letter words ending in ay',supporting:'ay ending words',words:1500,title:'5 Letter Words Ending in AY',url:'/5-letter-words-ending-in-ay.html',date:''},
+  {day:70,postNum:1,phase:'Scaling',keyword:'5 letter words ending in ed',supporting:'ed ending words',words:1500,title:'5 Letter Words Ending in ED',url:'/5-letter-words-ending-in-ed.html',date:''},
+  {day:70,postNum:2,phase:'Scaling',keyword:'5 letter words with a and t',supporting:'a t words',words:1500,title:'5 Letter Words With A and T',url:'/5-letter-words-with-a-and-t.html',date:''},
+  {day:70,postNum:3,phase:'Scaling',keyword:'5 letter words ending in ing',supporting:'ing ending words',words:1500,title:'5 Letter Words Ending in ING',url:'/5-letter-words-ending-in-ing.html',date:''},
+  // Phase 4: ROI (Days 71-100)
+  {day:71,postNum:1,phase:'ScalingROI',keyword:'unscramble words',supporting:'word unscrambler, letter solver',words:1800,title:'Unscramble Words Tool (Find Words Fast)',url:'/unscramble-words-tool.html',date:''},
+  {day:71,postNum:2,phase:'ScalingROI',keyword:'word finder tool',supporting:'find words from letters',words:1500,title:'Word Finder Tool',url:'/word-finder-tool.html',date:''},
+  {day:71,postNum:3,phase:'ScalingROI',keyword:'anagram solver online',supporting:'anagram generator',words:1500,title:'Anagram Solver Online (Free Tool)',url:'/anagram-solver-online.html',date:''},
+  {day:80,postNum:1,phase:'ScalingROI',keyword:'words with double letters',supporting:'double letter words',words:1500,title:'Words With Double Letters',url:'/words-with-double-letters.html',date:''},
+  {day:80,postNum:2,phase:'ScalingROI',keyword:'words with silent letters',supporting:'silent letter words',words:1500,title:'Words With Silent Letters',url:'/words-with-silent-letters.html',date:''},
+  {day:80,postNum:3,phase:'ScalingROI',keyword:'palindrome words',supporting:'palindrome examples',words:1500,title:'Palindrome Words List',url:'/palindrome-words.html',date:''},
+  {day:98,postNum:1,phase:'ScalingROI',keyword:'best scrabble words list',supporting:'top scrabble words',words:1500,title:'Best Scrabble Words List (Top Scoring)',url:'/best-scrabble-words.html',date:''},
+  {day:98,postNum:2,phase:'ScalingROI',keyword:'best wordle starting words',supporting:'wordle best start',words:1500,title:'Best Wordle Starting Words',url:'/best-wordle-starting-words.html',date:''},
+  {day:98,postNum:3,phase:'ScalingROI',keyword:'wordle strategy tips',supporting:'wordle tricks',words:1500,title:'Wordle Strategy Tips (Win Every Day)',url:'/wordle-strategy-tips.html',date:''},
+  {day:100,postNum:1,phase:'ScalingROI',keyword:'english dictionary words list',supporting:'dictionary words',words:1500,title:'English Dictionary Words List',url:'/english-dictionary-words.html',date:''},
+  {day:100,postNum:2,phase:'ScalingROI',keyword:'complete word list a to z',supporting:'a to z words',words:1500,title:'Complete Word List A to Z',url:'/complete-word-list-a-to-z.html',date:''},
+  {day:100,postNum:3,phase:'ScalingROI',keyword:'all english words list',supporting:'full words list',words:1500,title:'All English Words List (Complete Guide)',url:'/all-english-words-list.html',date:''},
+];
+
+// ╔══════════════════════════════════════════════════╗
+// ║  THEME                                            ║
+// ╚══════════════════════════════════════════════════╝
+function setTheme(name, btn) {
+  document.body.className = 'th-' + name;
+  document.querySelectorAll('.theme-btn').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  localStorage.setItem('spg_theme', name);
+}
+
+// ╔══════════════════════════════════════════════════╗
+// ║  DRAWER                                           ║
+// ╚══════════════════════════════════════════════════╝
+function openDrawer() {
+  document.getElementById('settingsDrawer').classList.add('open');
+  document.getElementById('drawerOverlay').classList.add('open');
+  const saved = localStorage.getItem('spg_sheet_url') || '';
+  const name  = localStorage.getItem('spg_sheet_name') || 'revised ChatGPT-90-DAY SEO PLAN';
+  document.getElementById('sheetUrlInput').value = saved;
+  document.getElementById('sheetNameInput').value = name;
+  const sd = localStorage.getItem('spg_start_date') || '';
+  document.getElementById('startDateInput').value = sd;
+}
+function closeDrawer() {
+  document.getElementById('settingsDrawer').classList.remove('open');
+  document.getElementById('drawerOverlay').classList.remove('open');
+}
+
+// ╔══════════════════════════════════════════════════╗
+// ║  CSV PARSER                                       ║
+// ╚══════════════════════════════════════════════════╝
+function parseCSV(text) {
+  const rows = [];
+  let row = [], field = '', inQ = false;
+  for (let i = 0; i < text.length; i++) {
+    const c = text[i], n = text[i+1];
+    if (c === '"') {
+      if (inQ && n === '"') { field += '"'; i++; }
+      else inQ = !inQ;
+    } else if (c === ',' && !inQ) {
+      row.push(field); field = '';
+    } else if ((c === '\n' || (c === '\r' && n === '\n')) && !inQ) {
+      if (c === '\r') i++;
+      row.push(field); field = '';
+      if (row.some(f => f.trim() !== '')) rows.push(row);
+      row = [];
+    } else {
+      field += c;
+    }
+  }
+  if (field !== '' || row.length) { row.push(field); if (row.some(f => f.trim() !== '')) rows.push(row); }
+  return rows;
+}
+
+// Convert Excel serial date (e.g. 46148) to YYYY-MM-DD
+function excelSerialToDate(serial) {
+  const n = parseFloat(serial);
+  if (isNaN(n) || n < 1000) return '';
+  const d = new Date((n - 25569) * 86400 * 1000);
+  return d.toISOString().slice(0, 10);
+}
+
+function csvRowToPost(row) {
+  // NEW column layout (0-indexed):
+  // 0=Part  1=Day("Day 1")  2=Post#("Post 1")  3=Phase  4=Keyword  5=Supporting
+  // 6=Wrote  7=TotalWord  8=Qty  9=Title  10=URL
+  // 11=Date(Excel serial)  12=PublishTime  13=SEOAction  14=TotalPosted
+  const dayRaw   = (row[1] || '').trim();
+  const dayMatch = dayRaw.match(/\d+/);
+  if (!dayMatch) return null;
+  const day = parseInt(dayMatch[0]);
+  if (isNaN(day) || day < 1) return null;
+
+  const postRaw   = (row[2] || '').trim();
+  const postMatch = postRaw.match(/\d+/);
+  const postNum   = postMatch ? parseInt(postMatch[0]) : 1;
+
+  const keyword = (row[4] || '').trim();
+  if (!keyword) return null;
+
+  const dateRaw = (row[11] || '').trim();
+  const date    = excelSerialToDate(dateRaw) || dateRaw;
+
+  return {
+    day,
+    postNum,
+    phase:        (row[3] || '').trim().replace(/\s+/g, ''),
+    keyword,
+    supporting:   (row[5] || '').trim(),
+    wrote:        (row[6] || '').trim().toLowerCase(),
+    words:        parseInt(row[7]) || 1500,
+    title:        (row[9] || '').trim(),
+    url:          (row[10] || '').trim(),
+    date,
+    totalPosted:  parseInt(row[14]) || 0,
+  };
+}
+
+// ╔══════════════════════════════════════════════════╗
+// ║  GOOGLE SHEETS FETCH                              ║
+// ╚══════════════════════════════════════════════════╝
+function extractSheetId(url) {
+  const m = url.match(/\/spreadsheets\/d\/([a-zA-Z0-9-_]+)/);
+  return m ? m[1] : null;
+}
+function extractGid(url) {
+  const m = url.match(/[#&?]gid=(\d+)/);
+  return m ? m[1] : '0';
+}
+
+async function fetchSheetCSV(sheetUrl, sheetName) {
+  const id  = extractSheetId(sheetUrl);
+  if (!id) throw new Error('Invalid Google Sheets URL — cannot find sheet ID. Make sure URL contains /spreadsheets/d/...');
+  const gid = extractGid(sheetUrl);
+
+  // Build target CSV URLs to try
+  const csvUrls = [
+    'https://docs.google.com/spreadsheets/d/' + id + '/pub?gid=' + gid + '&single=true&output=csv',
+    'https://docs.google.com/spreadsheets/d/' + id + '/gviz/tq?tqx=out:csv&gid=' + gid,
+    'https://docs.google.com/spreadsheets/d/' + id + '/gviz/tq?tqx=out:csv&sheet=' + encodeURIComponent(sheetName),
+    'https://docs.google.com/spreadsheets/d/' + id + '/export?format=csv&gid=' + gid,
+  ];
+
+  // CORS proxy wrappers
+  function viaAllOrigins(u) {
+    return 'https://api.allorigins.win/get?url=' + encodeURIComponent(u);
+  }
+  function viaCorsProxy(u) {
+    return 'https://corsproxy.io/?' + encodeURIComponent(u);
+  }
+
+  function fetchWithTimeout(url, ms) {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), ms);
+    return fetch(url, { signal: controller.signal })
+      .then(r => { clearTimeout(timer); return r; })
+      .catch(e => { clearTimeout(timer); throw e; });
+  }
+
+  async function tryUrl(fetchUrl, isProxy, proxyType) {
+    try {
+      const res = await fetchWithTimeout(fetchUrl, 8000); // 8s timeout per attempt
+      if (!res.ok) return null;
+      let text = '';
+      if (isProxy && proxyType === 'allorigins') {
+        const json = await res.json();
+        text = json.contents || '';
+      } else {
+        text = await res.text();
+      }
+      const t = text.trim();
+      if (!t || t.startsWith('<') || t.startsWith('{')) return null;
+      return text;
+    } catch(e) { return null; }
+  }
+
+  // Strategy: for each CSV URL, try direct then proxies
+  const total = csvUrls.length * 3;
+  let attempt = 0;
+  for (const csvUrl of csvUrls) {
+    attempt++;
+    setStatus('Trying method ' + attempt + ' of ' + total + ' — direct fetch...', 'loading');
+    const direct = await tryUrl(csvUrl, false, '');
+    if (direct) return direct;
+
+    attempt++;
+    setStatus('Trying method ' + attempt + ' of ' + total + ' — proxy 1 (allorigins)...', 'loading');
+    const ao = await tryUrl(viaAllOrigins(csvUrl), true, 'allorigins');
+    if (ao) return ao;
+
+    attempt++;
+    setStatus('Trying method ' + attempt + ' of ' + total + ' — proxy 2 (corsproxy)...', 'loading');
+    const cp = await tryUrl(viaCorsProxy(csvUrl), false, '');
+    if (cp) return cp;
+  }
+
+  throw new Error(
+    'Could not fetch your Google Sheet.\n\n' +
+    'Most likely fix: In Google Sheets go to File → Share → Publish to web → ' +
+    'choose your sheet tab → select CSV → click Publish. ' +
+    'Then try again. This is different from just "Share with anyone".'
+  );
+}
+
+function setStatus(msg, type) {
+  const el = document.getElementById('drawerStatus');
+  el.textContent = msg; el.className = 'drawer-status ' + type;
+}
+
+async function connectSheet() {
+  const url  = document.getElementById('sheetUrlInput').value.trim();
+  const name = document.getElementById('sheetNameInput').value.trim() || 'revised ChatGPT-90-DAY SEO PLAN';
+  if (!url) { setStatus('Please paste your Google Sheet URL first.', 'err'); return; }
+
+  const btn = document.getElementById('connectBtn');
+  btn.disabled = true; btn.textContent = '⏳ Fetching...';
+  setStatus('Connecting to your Google Sheet...', 'loading');
+
+  try {
+    const csv  = await fetchSheetCSV(url, name);
+    const rows = parseCSV(csv);
+    if (rows.length < 2) throw new Error('Sheet appears empty or has only headers.');
+
+    // Skip header row (row 0)
+    const posts = rows.slice(1).map(csvRowToPost).filter(Boolean);
+    if (posts.length === 0) throw new Error('No valid data rows found. Check column structure.');
+
+    localStorage.setItem('spg_sheet_url',  url);
+    localStorage.setItem('spg_sheet_name', name);
+    localStorage.setItem('spg_posts', JSON.stringify(posts));
+
+    allPosts = posts;
+    recalcStats();
+    buildLeftPanel();
+
+    setStatus(`✅ Connected! Loaded ${posts.length} posts across ${new Set(posts.map(p=>p.day)).size} days.`, 'ok');
+  } catch(e) {
+    setStatus('❌ ' + e.message, 'err');
+  }
+
+  btn.disabled = false; btn.textContent = '🔄 Connect & Fetch Data';
+}
+
+async function updateData() {
+  const url  = localStorage.getItem('spg_sheet_url');
+  const name = localStorage.getItem('spg_sheet_name') || 'revised ChatGPT-90-DAY SEO PLAN';
+  if (!url) { openDrawer(); return; }
+
+  const btn = document.getElementById('updateBtn');
+  btn.textContent = '⏳ Updating...'; btn.disabled = true;
+
+  try {
+    const csv   = await fetchSheetCSV(url, name);
+    const rows  = parseCSV(csv);
+    const posts = rows.slice(1).map(csvRowToPost).filter(Boolean);
+    localStorage.setItem('spg_posts', JSON.stringify(posts));
+    allPosts = posts;
+    recalcStats();
+    buildLeftPanel();
+    btn.textContent = '✅ Updated!';
+    setTimeout(() => { btn.textContent = '↻ Update'; btn.disabled = false; }, 2000);
+  } catch(e) {
+    btn.textContent = '❌ Failed';
+    setTimeout(() => { btn.textContent = '↻ Update'; btn.disabled = false; }, 2500);
+    alert('Update failed: ' + e.message);
+  }
+}
+
+function clearSheet() {
+  localStorage.removeItem('spg_sheet_url');
+  localStorage.removeItem('spg_sheet_name');
+  localStorage.removeItem('spg_posts');
+  allPosts = [...BUILTIN];
+  recalcStats();
+  buildLeftPanel();
+  setStatus('Disconnected. Using built-in data.', 'ok');
+}
+
+function saveSettings() {
+  const sd = document.getElementById('startDateInput').value;
+  if (sd) localStorage.setItem('spg_start_date', sd);
+  recalcStats();
+  closeDrawer();
+}
+
+// ╔══════════════════════════════════════════════════╗
+// ║  STATS + COUNTDOWN                                ║
+// ╚══════════════════════════════════════════════════╝
+function parseDate(str) {
+  if (!str) return null;
+  // Try various date formats
+  const d = new Date(str);
+  if (!isNaN(d)) return d;
+  // Try MM/DD/YYYY
+  const m = str.match(/(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{2,4})/);
+  if (m) {
+    const yr = m[3].length === 2 ? '20' + m[3] : m[3];
+    return new Date(`${yr}-${m[1].padStart(2,'0')}-${m[2].padStart(2,'0')}`);
+  }
+  return null;
+}
+
+function recalcStats() {
+  const today = new Date(); today.setHours(0,0,0,0);
+  const posts  = allPosts;
+  const total  = posts.length;
+  const phases = new Set(posts.map(p => p.phase)).size;
+
+  // Dates from data
+  let dates = posts.map(p => parseDate(p.date)).filter(Boolean);
+
+  // Override start date from settings
+  const manualStart = parseDate(localStorage.getItem('spg_start_date'));
+
+  let startD = dates.length ? new Date(Math.min(...dates)) : (manualStart || today);
+  let endD   = dates.length ? new Date(Math.max(...dates)) : null;
+
+  // If no dates in data, estimate from day numbers
+  if (!endD && posts.length) {
+    const maxDay = Math.max(...posts.map(p => p.day));
+    endD = new Date(startD); endD.setDate(endD.getDate() + maxDay - 1);
+  }
+  endDate = endD;
+
+  // Days remaining
+  let daysLeft = '—';
+  if (endD) {
+    const dl = Math.max(0, Math.ceil((endD - today) / 86400000));
+    daysLeft = dl;
+  }
+
+  // Posts remaining (date >= today OR no date = not done)
+  let postsLeft = posts.filter(p => {
+    const d = parseDate(p.date);
+    if (!d) return p.wrote !== 'yes';
+    d.setHours(0,0,0,0);
+    return d >= today;
+  }).length;
+
+  // Progress
+  let pct = 0;
+  if (endD && startD) {
+    const elapsed  = today - startD;
+    const totalSpan = endD - startD;
+    pct = totalSpan > 0 ? Math.min(100, Math.max(0, (elapsed / totalSpan) * 100)) : 0;
+  }
+
+  document.getElementById('statDays').textContent   = daysLeft;
+  document.getElementById('statPosts').textContent  = postsLeft;
+  document.getElementById('statPhases').textContent = phases;
+  document.getElementById('statTotal').textContent  = total;
+  document.getElementById('progressFill').style.width = pct.toFixed(1) + '%';
+
+  // Restart countdown
+  if (countdownInterval) clearInterval(countdownInterval);
+  if (endD) {
+    const tick = () => {
+      const now = new Date();
+      const end = new Date(endD); end.setHours(23,59,59,999);
+      const diff = end - now;
+      if (diff <= 0) {
+        document.getElementById('countdownClock').textContent = 'DONE!';
+        clearInterval(countdownInterval); return;
+      }
+      const h = Math.floor(diff/3600000);
+      const m = Math.floor((diff%3600000)/60000);
+      const s = Math.floor((diff%60000)/1000);
+      const dd = Math.floor(diff/86400000);
+      document.getElementById('countdownClock').textContent =
+        `${String(dd).padStart(2,'0')}d ${String(h%24).padStart(2,'0')}h ${String(m).padStart(2,'0')}m ${String(s).padStart(2,'0')}s`;
+    };
+    tick();
+    countdownInterval = setInterval(tick, 1000);
+  }
+}
+
+// ╔══════════════════════════════════════════════════╗
+// ║  LEFT PANEL                                       ║
+// ╚══════════════════════════════════════════════════╝
+function setFilter(f, el) {
+  activeFilter = f;
+  document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+  buildLeftPanel();
+}
+function setSearch(v) { searchVal = v.toLowerCase(); buildLeftPanel(); }
+
+const PHASE_LABELS = {
+  Authority: 'Authority', Recency: 'Recency',
+  Scaling: 'Scaling', ScalingROI: 'Scaling+ROI',
+};
+const PHASE_SECTIONS = {
+  Authority: '⬤  PHASE 1 — AUTHORITY',
+  Recency:   '⬤  PHASE 2 — RECENCY',
+  Scaling:   '⬤  PHASE 3 — SCALING',
+  ScalingROI:'⬤  PHASE 4 — SCALING + ROI',
+};
+const PHASE_COLORS = { Authority:'var(--ph1)', Recency:'var(--ph2)', Scaling:'var(--ph3)', ScalingROI:'var(--ph4)' };
+
+function buildLeftPanel() {
+  const panel = document.getElementById('leftPanel');
+  panel.innerHTML = '';
+  const today = new Date(); today.setHours(0,0,0,0);
+
+  // Group by day
+  const dayMap = {};
+  allPosts.forEach(p => { if (!dayMap[p.day]) dayMap[p.day] = []; dayMap[p.day].push(p); });
+
+  // Filter
+  const filtered = {};
+  Object.entries(dayMap).forEach(([d, posts]) => {
+    const fp = posts.filter(p => {
+      const phMatch = activeFilter === 'all' || p.phase === activeFilter;
+      const srMatch = !searchVal || p.keyword.toLowerCase().includes(searchVal) || p.title.toLowerCase().includes(searchVal);
+      return phMatch && srMatch;
+    });
+    if (fp.length) filtered[d] = fp;
+  });
+
+  if (Object.keys(filtered).length === 0) {
+    panel.innerHTML = '<div class="empty-msg">No posts match your filter or search.</div>';
+    return;
+  }
+
+  let lastPhase = null;
+  Object.keys(filtered).sort((a,b) => +a - +b).forEach(d => {
+    const posts = filtered[d];
+    const phase = posts[0].phase;
+    const pnorm = phase in PHASE_SECTIONS ? phase : 'Authority';
+
+    if (phase !== lastPhase) {
+      const sh = document.createElement('div');
+      sh.className = 'phase-section-hdr';
+      sh.style.color = PHASE_COLORS[pnorm] || 'var(--accent)';
+      sh.innerHTML = `<span class="dot" style="background:${PHASE_COLORS[pnorm]||'var(--accent)'}"></span>${PHASE_SECTIONS[pnorm] || phase.toUpperCase()}`;
+      panel.appendChild(sh);
+      lastPhase = phase;
+    }
+
+    const grp = document.createElement('div'); grp.className = 'day-group';
+
+    const hdr = document.createElement('div'); hdr.className = 'day-hdr';
+    const phaseKey = phase.replace(/\s+/g,'');
+    const badgeCls = ['Authority','Recency','Scaling','ScalingROI'].includes(phaseKey) ? 'ph-'+phaseKey : 'ph-default';
+
+    // Date label
+    let dateLbl = ''; let dateCls = 'day-date-lbl';
+    const pDate = parseDate(posts[0].date);
+    if (pDate) {
+      pDate.setHours(0,0,0,0);
+      const diff = Math.round((pDate - today) / 86400000);
+      if (diff === 0) { dateLbl = 'TODAY'; dateCls += ' today'; }
+      else if (diff < 0) { dateLbl = posts[0].date; dateCls += ' past'; }
+      else dateLbl = posts[0].date;
+    }
+
+    hdr.innerHTML = `
+      <span class="day-num-lbl">Day ${d}</span>
+      <span class="phase-badge ${badgeCls}">${PHASE_LABELS[phaseKey]||phase}</span>
+      ${dateLbl ? `<span class="${dateCls}">${dateLbl}</span>` : ''}
+    `;
+    grp.appendChild(hdr);
+
+    const postsDiv = document.createElement('div'); postsDiv.className = 'day-posts';
+    posts.forEach(p => {
+      const btn = document.createElement('button');
+      const btnId = `pbtn-${p.day}-${p.postNum}`;
+      btn.id = btnId; btn.className = 'post-btn';
+      if (p.wrote === 'yes') btn.classList.add('done');
+
+      const short = p.keyword.length > 36 ? p.keyword.slice(0,36) + '…' : p.keyword;
+      btn.innerHTML = `
+        <span class="post-num">P${p.postNum}</span>
+        <span>${short}</span>
+        ${p.wrote === 'yes' ? '<span class="post-tick">✓</span>' : ''}
+      `;
+      btn.onclick = () => selectPost(p, btn);
+      postsDiv.appendChild(btn);
+    });
+    grp.appendChild(postsDiv);
+    panel.appendChild(grp);
+  });
+
+  // Re-apply active state
+  if (activeBtn) {
+    const id = activeBtn.id;
+    const el = document.getElementById(id);
+    if (el) el.classList.add('active');
+  }
+}
+
+// ╔══════════════════════════════════════════════════╗
+// ║  RIGHT PANEL — SELECT POST                        ║
+// ╚══════════════════════════════════════════════════╝
+function goHome() {
+  if (activeBtn) { activeBtn.classList.remove('active'); activeBtn = null; }
+  const hasSheet = !!localStorage.getItem('spg_sheet_url');
+  document.getElementById('rightPanel').innerHTML =
+    '<div class="welcome-screen">' +
+    '<div class="welcome-icon">⚡</div>' +
+    '<div class="welcome-title">Ready to Generate</div>' +
+    '<div class="welcome-sub">Pick any Day &amp; Post from the left panel. Your fully-formatted SEO prompt appears here — one click to copy.</div>' +
+    '<div class="welcome-steps">' +
+    '<div class="w-step"><div class="w-step-n">STEP 1</div><div class="w-step-t">Click any Post button on the left</div></div>' +
+    '<div class="w-step"><div class="w-step-n">STEP 2</div><div class="w-step-t">Prompt auto-generates with all your data</div></div>' +
+    '<div class="w-step"><div class="w-step-n">STEP 3</div><div class="w-step-t">Copy &amp; paste into Claude / ChatGPT / Gemini</div></div>' +
+    '</div></div>' +
+    (!hasSheet ? '<div class="no-sheet-notice"><div><strong>📊 Connect your Google Sheet for live updates!</strong><br>Currently showing built-in data. Connect your sheet to sync automatically.</div><button onclick="openDrawer()">Connect Sheet</button></div>' : '');
+}
+
+function selectPost(post, btn) {
+  if (activeBtn) activeBtn.classList.remove('active');
+  btn.classList.add('active');
+  activeBtn = btn;
+
+
+  const prompt = generatePrompt(post);
+  const phaseKey = (post.phase||'').replace(/\s+/g,'');
+  const phColor = PHASE_COLORS[phaseKey] || 'var(--accent)';
+  const phLabel = PHASE_LABELS[phaseKey] || post.phase;
+
+  document.getElementById('rightPanel').innerHTML = `
+    <div class="prompt-card">
+      <div class="prompt-card-hdr">
+        <div class="prompt-day-tag">Day ${post.day} · Post ${post.postNum} · ${phLabel}</div>
+        <div class="prompt-title">${post.title || post.keyword}</div>
+        <div class="prompt-url">${post.url || ''}</div>
+        <div class="prompt-chips">
+          <span class="p-chip"><strong>Keyword:</strong> ${post.keyword}</span>
+          <span class="p-chip"><strong>Words:</strong> ~${post.words}</span>
+          ${post.date ? `<span class="p-chip"><strong>Date:</strong> ${post.date}</span>` : ''}
+          <span class="p-chip" style="border-color:${phColor};color:${phColor}">${phLabel}</span>
+        </div>
+        <div class="copy-btn-wrap">
+          <button class="copy-btn" id="copyBtn" onclick="doCopy()">📋 Copy Prompt</button>
+          <a class="open-ai-btn" href="https://claude.ai" target="_blank">Open Claude AI ↗</a>
+          <a class="open-ai-btn" href="https://chat.openai.com" target="_blank">Open ChatGPT ↗</a>
+        </div>
+      </div>
+      <div class="prompt-body">
+        <textarea class="prompt-textarea" id="promptText" readonly>${prompt}</textarea>
+      </div>
+    </div>
+    <div class="tips-card">
+      <div class="tips-title">💡 How to use this prompt</div>
+      <ul class="tips-list">
+        <li>Click <strong>Copy Prompt</strong> → paste into Claude AI, ChatGPT, or Gemini</li>
+        <li>All variables pre-filled: keyword, title, URL, word count, supporting keywords</li>
+        <li>After AI generates the article → copy output → paste into WordPress</li>
+        <li>Supporting keywords to weave in: <em>${post.supporting || 'See prompt above'}</em></li>
+      </ul>
+    </div>
+  `;
+  document.getElementById('rightPanel').scrollTop = 0;
+}
+
+function doCopy() {
+  const ta  = document.getElementById('promptText');
+  const btn = document.getElementById('copyBtn');
+  if (!ta || !btn) return;
+  navigator.clipboard.writeText(ta.value).then(() => {
+    btn.textContent = '✅ Copied!'; btn.classList.add('copied');
+    setTimeout(() => { btn.innerHTML = '📋 Copy Prompt'; btn.classList.remove('copied'); }, 2200);
+  }).catch(() => { ta.select(); document.execCommand('copy'); });
+}
+
+// ╔══════════════════════════════════════════════════╗
+// ║  PROMPT GENERATORS                                ║
+// ╚══════════════════════════════════════════════════╝
+function generatePrompt(p) {
+  const kw = p.keyword, sup = p.supporting || '', ttl = p.title || kw,
+        url = p.url || '', w = p.words || 1500;
+
+  if (/starting with ([a-z])$/i.test(kw)) {
+    const L = kw.match(/starting with ([a-z])/i)[1].toUpperCase();
+    return promptLetterStart(L, kw, sup, ttl, url, w);
+  }
+  if (/wordle answer today|wordle hints today|wordle answer yesterday/i.test(kw)) return promptWordleDaily(kw, sup, ttl, url, w);
+  if (/wordle/i.test(kw)) return promptWordle(kw, sup, ttl, url, w);
+  if (/scrabble/i.test(kw)) return promptScrabble(kw, sup, ttl, url, w);
+  if (/tool|solver|generator|finder|unscramble|anagram/i.test(kw)) return promptTool(kw, sup, ttl, url, w);
+  return promptGeneral(kw, sup, ttl, url, w);
+}
+
+function promptLetterStart(L, kw, sup, ttl, url, w) {
+return `You are an expert SEO content writer specialized in Wordle, Scrabble, and word-based search intent websites.
+
+WEBSITE: ${WEBSITE}
+LETTER: ${L}
+PRIMARY KEYWORD: ${kw}
+SECONDARY KEYWORDS: ${sup}
+ARTICLE TITLE: ${ttl}
+TARGET URL: ${url}
+TARGET WORD COUNT: ${w}–${w+400} words
+
+============================================================
+CRITICAL RULES:
+• Minimum 200 unique, verified real English dictionary words
+• Data-first: word list is the #1 priority
+• Zero fluff — intro max 80–100 words
+• Include primary keyword naturally in first 100 words
+• NO duplication from other letter pages
+============================================================
+
+ARTICLE STRUCTURE (follow exactly):
+
+1. TITLE: ${ttl}
+
+2. INTRO (80–100 words max)
+   — Mention Wordle, Scrabble, and word puzzles
+   — State what the article provides, no storytelling
+
+3. FEATURED SNIPPET SECTION:
+   <h2>What are 5 letter words starting with ${L}?</h2>
+   → 40–60 word direct answer + 5–8 bullet examples
+   → Optimized to win Google featured snippet
+
+4. MAIN WORD LIST:
+   <h2>5 Letter Words Starting With ${L} (Full List)</h2>
+   → 200+ words in alphabetical comma-separated list
+   → Table of first 50–80:
+      | Word | Short Meaning (3–8 words) | Scrabble Score |
+
+5. BEST FOR WORDLE:
+   <h2>Best 5 Letter Words Starting With ${L} for Wordle</h2>
+   → 10–15 vowel-heavy or strategically strong picks
+   → 1-line Wordle tip for each (focus: E,A,R,I,O,T,N,S)
+
+6. COMMON WORDS:
+   <h2>Common 5 Letter Words Starting With ${L}</h2>
+   → 15–25 everyday words + short meanings
+
+7. RARE & HIGH-VALUE:
+   <h2>Rare & High-Value 5 Letter Words Starting With ${L}</h2>
+   → 8–15 rare but valid words + Scrabble point value
+
+8. STRATEGY TIPS (150–200 words max):
+   <h2>Wordle & Scrabble Strategy for ${L} Words</h2>
+   → Letter positioning, vowel combos, common patterns
+   → Scrabble board placement tips
+
+9. FAQ (4–5 questions, 40–80 words each):
+   <h2>Frequently Asked Questions</h2>
+
+10. FAQ SCHEMA JSON-LD:
+    <script type="application/ld+json">
+    {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[...]}
+    ${SC}
+
+11. RELATED LINKS:
+    <h2>Related Word Lists on ${WEBSITE}</h2>
+    → 6–8 internal links to other letter pages
+
+============================================================
+DELIVER ALL:
+✅ Full article (${w}–${w+400} words)
+✅ Meta Title (max 60 chars)
+✅ Meta Description (max 155 chars)
+✅ Suggested URL: ${url}
+✅ 15 SEO Tags (comma-separated)
+✅ FAQ Schema JSON-LD block`;
+}
+
+function promptWordleDaily(kw, sup, ttl, url, w) {
+return `You are an expert SEO content writer for Wordle and daily word puzzle content.
+
+WEBSITE: ${WEBSITE}
+PRIMARY KEYWORD: ${kw}
+SECONDARY KEYWORDS: ${sup}
+ARTICLE TITLE: ${ttl}
+TARGET URL: ${url}
+TARGET WORD COUNT: ${w}–${w+200} words
+
+============================================================
+CRITICAL RULES:
+• TIME-SENSITIVE article — answer/hints must be at the TOP
+• Users want the answer IMMEDIATELY — put it first
+• Zero fluff — intro max 50 words
+• Write in direct, helpful tone
+============================================================
+
+ARTICLE STRUCTURE:
+
+1. TITLE: ${ttl}
+
+2. INTRO (max 50 words)
+   — State what this page provides instantly, no filler
+
+3. TODAY'S ANSWER (TOP PRIORITY):
+   <h2>Wordle Answer Today</h2>
+   → Spoiler warning note
+   → [UPDATE DAILY: Insert actual 5-letter answer here]
+   → Brief note on the word's meaning (2–3 sentences)
+
+4. HINTS (no spoilers):
+   <h2>Wordle Hints Today (No Spoilers)</h2>
+   → 5 progressive hints:
+     Hint 1: Number of vowels
+     Hint 2: First letter clue
+     Hint 3: Word category/topic
+     Hint 4: Partial letters revealed
+     Hint 5: Almost the full answer
+
+5. HOW TO SOLVE:
+   <h2>How to Solve Today's Wordle</h2>
+   → Best starting words to use
+   → Letter elimination strategy
+   → Yellow vs green tile tips
+
+6. WORDLE STRATEGY (100–150 words):
+   <h2>Wordle Tips to Win Every Day</h2>
+   → Best openers (CRANE, SLATE, ADIEU etc.)
+   → Hard mode tips, streak strategy
+
+7. FAQ (3–4 questions, 40–60 words each)
+
+8. FAQ SCHEMA JSON-LD:
+   <script type="application/ld+json">
+   {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[...]}
+   ${SC}
+
+9. RELATED LINKS (5–6 internal links on ${WEBSITE})
+
+============================================================
+DELIVER ALL:
+✅ Full article (${w}–${w+200} words)
+✅ Meta Title with "Today" freshness signal (max 60 chars)
+✅ Meta Description (max 155 chars)
+✅ URL: ${url}
+✅ 10 SEO Tags
+✅ FAQ Schema JSON-LD`;
+}
+
+function promptWordle(kw, sup, ttl, url, w) {
+return `You are an expert SEO content writer for Wordle and 5-letter word content.
+
+WEBSITE: ${WEBSITE}
+PRIMARY KEYWORD: ${kw}
+SECONDARY KEYWORDS: ${sup}
+ARTICLE TITLE: ${ttl}
+TARGET URL: ${url}
+TARGET WORD COUNT: ${w}–${w+300} words
+
+============================================================
+CRITICAL RULES:
+• Word list is #1 priority — min 100 verified Wordle-valid words
+• Zero fluff — intro max 80 words
+• Structured for featured snippets
+============================================================
+
+ARTICLE STRUCTURE:
+
+1. TITLE: ${ttl}
+
+2. INTRO (max 80 words)
+
+3. FEATURED SNIPPET:
+   <h2>What are ${kw}?</h2>
+   → 40–60 word answer + 5–8 bullet examples
+
+4. MAIN WORD LIST:
+   <h2>${ttl} (Complete List)</h2>
+   → 100+ alphabetical words
+   → Table of first 40:
+      | Word | Definition | Wordle Value |
+
+5. BEST PICKS FOR WORDLE:
+   <h2>Top Picks for Winning Wordle</h2>
+   → 10 strongest words + 1-line Wordle strategy note each
+
+6. STRATEGY & TIPS (100–150 words):
+   <h2>How to Use These Words in Wordle</h2>
+   → Letter elimination, positioning, hard mode tips
+
+7. FAQ (4 questions, 40–60 words each)
+
+8. FAQ SCHEMA JSON-LD:
+   <script type="application/ld+json">
+   {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[...]}
+   ${SC}
+
+9. RELATED LINKS (6 internal links on ${WEBSITE})
+
+============================================================
+DELIVER ALL:
+✅ Full article (${w}–${w+300} words)
+✅ Meta Title (max 60 chars)
+✅ Meta Description (max 155 chars)
+✅ URL: ${url}
+✅ 12 SEO Tags
+✅ FAQ Schema JSON-LD`;
+}
+
+function promptScrabble(kw, sup, ttl, url, w) {
+return `You are an expert SEO content writer for Scrabble and word game content.
+
+WEBSITE: ${WEBSITE}
+PRIMARY KEYWORD: ${kw}
+SECONDARY KEYWORDS: ${sup}
+ARTICLE TITLE: ${ttl}
+TARGET URL: ${url}
+TARGET WORD COUNT: ${w}–${w+300} words
+
+============================================================
+CRITICAL RULES:
+• All words must be valid OSPD/TWL Official Scrabble dictionary words
+• Scrabble scores MANDATORY for every word in lists
+• Data-first: lists over essays
+• Intro max 80 words
+============================================================
+
+ARTICLE STRUCTURE:
+
+1. TITLE: ${ttl}
+
+2. INTRO (max 80 words)
+
+3. FEATURED SNIPPET:
+   <h2>What are ${kw}?</h2>
+   → 40–60 words + 5 highest-scoring examples
+
+4. MAIN WORD LIST (sorted by Scrabble score):
+   <h2>${ttl} — Sorted by Score</h2>
+   → Table (min 40 words): | Word | Scrabble Score | Meaning |
+   → Full alphabetical list (100+ words) below table
+
+5. HIGHEST SCORING PICKS:
+   <h2>Top Scoring ${kw} for Maximum Points</h2>
+   → Top 10–15 + score + 1-line meaning + placement tip
+
+6. SCRABBLE BOARD STRATEGY (100–150 words):
+   <h2>Board Placement Strategy</h2>
+   → Triple Word/Triple Letter positioning
+   → Opening move combinations
+
+7. FAQ (4 questions, 40–60 words each)
+
+8. FAQ SCHEMA JSON-LD:
+   <script type="application/ld+json">
+   {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[...]}
+   ${SC}
+
+9. RELATED LINKS (6 internal links on ${WEBSITE})
+
+============================================================
+DELIVER ALL:
+✅ Full article (${w}–${w+300} words)
+✅ Meta Title (max 60 chars)
+✅ Meta Description (max 155 chars)
+✅ URL: ${url}
+✅ 12 SEO Tags including: Scrabble, high score, word game
+✅ FAQ Schema JSON-LD`;
+}
+
+function promptTool(kw, sup, ttl, url, w) {
+return `You are an expert SEO content writer for word game tools and online word resources.
+
+WEBSITE: ${WEBSITE}
+PRIMARY KEYWORD: ${kw}
+SECONDARY KEYWORDS: ${sup}
+ARTICLE TITLE: ${ttl}
+TARGET URL: ${url}
+TARGET WORD COUNT: ${w}–${w+300} words
+
+============================================================
+CRITICAL RULES:
+• TOOL article — user intent is to DO something, not just read
+• Be practical and action-oriented throughout
+• Zero fluff — every sentence is actionable
+• Intro max 80 words
+============================================================
+
+ARTICLE STRUCTURE:
+
+1. TITLE: ${ttl}
+
+2. INTRO (max 80 words)
+   — What the tool does, who needs it, instant value statement
+
+3. FEATURED SNIPPET:
+   <h2>What is ${kw}?</h2>
+   → 40–60 word direct definition + how to use in 1 sentence
+
+4. HOW TO USE:
+   <h2>How to Use ${ttl}</h2>
+   → Numbered step-by-step instructions (4–6 clear steps)
+
+5. EXAMPLES / RESULTS:
+   <h2>Sample Results & Examples</h2>
+   → 30–50 sample outputs in table or grouped list:
+      | Input | Output Words | Notes |
+
+6. USE CASES (100–120 words):
+   <h2>When to Use This — Real Scenarios</h2>
+   → Wordle solving, Scrabble, crosswords, hangman, vocab building
+
+7. PRO TIPS (80–120 words):
+   <h2>Pro Tips for Better Results</h2>
+
+8. FAQ (4 questions, 40–60 words each)
+
+9. FAQ SCHEMA JSON-LD:
+   <script type="application/ld+json">
+   {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[...]}
+   ${SC}
+
+10. RELATED LINKS (6 internal links on ${WEBSITE})
+
+============================================================
+DELIVER ALL:
+✅ Full article (${w}–${w+300} words)
+✅ Meta Title (max 60 chars)
+✅ Meta Description (max 155 chars)
+✅ URL: ${url}
+✅ 12 SEO Tags including: word tool, free tool, online tool
+✅ FAQ Schema JSON-LD`;
+}
+
+function promptGeneral(kw, sup, ttl, url, w) {
+return `You are an expert SEO content writer for Wordle, Scrabble, and word game resources.
+
+WEBSITE: ${WEBSITE}
+PRIMARY KEYWORD: ${kw}
+SECONDARY KEYWORDS: ${sup}
+ARTICLE TITLE: ${ttl}
+TARGET URL: ${url}
+TARGET WORD COUNT: ${w}–${w+300} words
+
+============================================================
+CRITICAL RULES:
+• Data and lists first — users come for information, not stories
+• Include primary keyword naturally in first 100 words
+• Zero fluff — every paragraph adds direct value
+• Structured for Google featured snippets
+• Intro max 80 words
+============================================================
+
+ARTICLE STRUCTURE:
+
+1. TITLE: ${ttl}
+
+2. INTRO (max 80 words)
+   — State what page covers, include primary keyword, no filler
+
+3. FEATURED SNIPPET:
+   <h2>What are / What is ${kw}?</h2>
+   → 40–60 word direct answer + 5–8 bullet examples
+
+4. MAIN CONTENT:
+   <h2>${ttl} — Complete Guide</h2>
+   → Comprehensive list/table (80–120+ items):
+      | Item | Description | Notes |
+   → Use sub-sections with H3 tags if needed
+
+5. PRACTICAL EXAMPLES:
+   <h2>Examples & Real Usage</h2>
+   → Show application in Wordle / Scrabble / word games
+
+6. TIPS & STRATEGY (100–150 words):
+   <h2>Tips for Using ${kw}</h2>
+   → Actionable, game-focused tips
+
+7. FAQ (4–5 questions, 40–60 words each)
+
+8. FAQ SCHEMA JSON-LD:
+   <script type="application/ld+json">
+   {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[...]}
+   ${SC}
+
+9. RELATED LINKS (6 internal links on ${WEBSITE})
+
+============================================================
+DELIVER ALL:
+✅ Full article (${w}–${w+300} words)
+✅ Meta Title (max 60 chars)
+✅ Meta Description (max 155 chars)
+✅ URL: ${url}
+✅ 12 SEO Tags
+✅ FAQ Schema JSON-LD`;
+}
+
+// ╔══════════════════════════════════════════════════╗
+// ║  INIT                                             ║
+// ╚══════════════════════════════════════════════════╝
+function init() {
+  // Restore theme
+  const savedTheme = localStorage.getItem('spg_theme') || 'midnight';
+  const themeBtn = document.querySelector(`.theme-btn[title="${savedTheme.charAt(0).toUpperCase()+savedTheme.slice(1)}"]`);
+  setTheme(savedTheme, themeBtn);
+
+  // Load posts: try saved sheet data first, fallback to built-in
+  const savedPosts = localStorage.getItem('spg_posts');
+  if (savedPosts) {
+    try {
+      allPosts = JSON.parse(savedPosts);
+    } catch(e) {
+      allPosts = [...BUILTIN];
+    }
+  } else {
+    allPosts = [...BUILTIN];
+  }
+
+  recalcStats();
+  buildLeftPanel();
+
+  // Show sheet notice if no sheet connected
+  const hasSheet = !!localStorage.getItem('spg_sheet_url');
+  if (!hasSheet) {
+    const rp = document.getElementById('rightPanel');
+    const notice = document.createElement('div');
+    notice.className = 'no-sheet-notice';
+    notice.innerHTML = `
+      <div>
+        <strong>📊 Connect your Google Sheet for live updates!</strong><br>
+        Currently showing built-in data (100 days). Connect your sheet to sync keywords, dates, phases and new days automatically.
+      </div>
+      <button onclick="openDrawer()">Connect Sheet</button>
+    `;
+    rp.insertBefore(notice, rp.firstChild);
+  }
+}
+
+init();
+</script>
+</body>
+</html>
